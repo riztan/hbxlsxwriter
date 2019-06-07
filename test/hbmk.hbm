@@ -1,0 +1,5 @@
+hbxlsxwriter.hbc
+-w3 -es2
+-I../ 
+-I/home/riztan/libxlsxwriter/lib -lxlsxwriter
+-L../
