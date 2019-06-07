@@ -424,7 +424,7 @@ HB_FUNC( HB_LXW_DV_VALUE_LIST )
 {
    lxw_data_validation *dv = hb_parptr( 1 );
    PHB_ITEM pArray = hb_param( 2, HB_IT_ARRAY );
-   lxw_worksheet *worksheet = hb_parptr( 3 );
+   //lxw_worksheet *worksheet = hb_parptr( 3 );
 
    if( pArray )
    {
