@@ -1,3 +1,19 @@
+/**********************************************
+ *  
+ * hbxlsxwriter.ch - A library for creating Excel XLSX worksheet files for Harbour.
+ *
+ * Used in conjunction with the libxlsxwriter library.
+ *
+ * Copyright 2014-2019, John McNamara, jmcnamara@cpan.org. See LICENSE.txt.
+ *
+ * Adapted for Harbour by Riztan Gutierrez, riztan@gmail.com
+ *
+ */
+
+//#xtranslate <dv>.<key> := <value>  =>  hb_lxw_dv( @<dv>, #<key>, <value> )
+
+
+
 
 /**
  * @brief Convert an Excel `A1:B2` range into a `(first_row, first_col,

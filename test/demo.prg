@@ -9,36 +9,36 @@
 
 #include "hbxlsxwriter.ch"
 
-procedure main() 
+PROCEDURE Main()
 
-   local workbook, worksheet, format
+   LOCAL workbook, worksheet, format
 
    /* Create a new workbook and add a worksheet. */
-   workbook  := workbook_new("demo.xlsx")
-   worksheet := workbook_add_worksheet(workbook, NIL )
+   workbook  := workbook_new( "demo.xlsx" )
+   worksheet := workbook_add_worksheet( workbook )
 
    /* Add a format. */
-   format := workbook_add_format(workbook)
+   format := workbook_add_format( workbook )
 
    /* Set the bold property for the format */
-   format_set_bold(format)
+   format_set_bold( format )
 
    /* Change the column width for clarity. */
-   worksheet_set_column(worksheet, 0, 0, 20, NIL)
+   worksheet_set_column( worksheet, 0, 0, 20 )
 
    /* Write some simple text. */
-   worksheet_write_string(worksheet, 0, 0, "Hello", NIL)
+   worksheet_write_string( worksheet, 0, 0, "Hello" )
 
    /* Text with formatting. */
-   worksheet_write_string(worksheet, 1, 0, "World", format)
+   worksheet_write_string( worksheet, 1, 0, "World", format )
 
    /* Write some numbers. */
-   worksheet_write_number(worksheet, 2, 0, 123, NIL)
-   worksheet_write_number(worksheet, 3, 0, 123.456, NIL)
+   worksheet_write_number( worksheet, 2, 0, 123 )
+   worksheet_write_number( worksheet, 3, 0, 123.456 )
 
    /* Insert an image. */
-   worksheet_insert_image(worksheet, 1, 2, "logo.png")
+   worksheet_insert_image( worksheet, 1, 2, "hb_logo.png" )
 
-   workbook_close(workbook)
+   workbook_close( workbook )
 
-
+//eof
