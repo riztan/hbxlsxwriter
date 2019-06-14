@@ -1757,8 +1757,8 @@ HB_FUNC( WORKSHEET_DATA_VALIDATION_CELL )
 		HB_SIZE nLen = hb_itemSize( pValue );
 		if( nLen )
 		{
-		    validation->value_list = (char **) hb_xalloc( sizeof( char* ) * (nLen+1) );
-                    memset( validation->value_list, 0, sizeof( char * ) * ( nLen+1 ) );
+		    validation->value_list = (char **) hb_xalloc( sizeof( char* ) * (nLen+2) );
+                    memset( validation->value_list, 0, sizeof( char * ) * ( nLen+2 ) );
 		    HB_SIZE nIndex = 0;
 		    while( nIndex<nLen ){
 			validation->value_list[ nIndex ] = hb_arrayGetC( pValue, nIndex+1 );
