@@ -1627,7 +1627,9 @@ HB_FUNC( WORKSHEET_DATA_VALIDATION_CELL )
 
    lxw_data_validation *validation = (lxw_data_validation *) hb_xalloc( sizeof(lxw_data_validation) ); 
    if( validation == NULL )
-	   return;
+   {
+      hb_errRT_BASE( EG_MEM, 0, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
    memset( validation, 0, sizeof( lxw_data_validation) );
 
    HB_SIZE nLen = hb_hashLen( pHash ), nPos = 0;
@@ -1757,14 +1759,20 @@ HB_FUNC( WORKSHEET_DATA_VALIDATION_CELL )
 		HB_SIZE nLen = hb_itemSize( pValue );
 		if( nLen )
 		{
-		    validation->value_list = (char **) hb_xalloc( sizeof( char* ) * (nLen+2) );
-                    memset( validation->value_list, 0, sizeof( char * ) * ( nLen+2 ) );
-		    HB_SIZE nIndex = 0;
-		    while( nIndex<nLen ){
-			validation->value_list[ nIndex ] = hb_arrayGetC( pValue, nIndex+1 );
-			nIndex++ ;
+		    validation->value_list = (char **) hb_xalloc( sizeof( char* ) * (nLen+1) );
+		    if( validation->value_list == NULL )
+		    {
+                        hb_errRT_BASE( EG_MEM, 0, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
 		    }
-		    validation->value_list[ nLen+1 ] = NULL;
+		    else
+		    {
+                       memset( validation->value_list, 0, sizeof( char * ) * ( nLen+1 ) );
+		       HB_SIZE nIndex = 0;
+		       while( nIndex<nLen ){
+		   	   validation->value_list[ nIndex ] = hb_arrayGetC( pValue, nIndex+1 );
+			   nIndex++ ;
+		       }
+		    }
 		}
 	    }
 	 }
