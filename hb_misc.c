@@ -14,12 +14,6 @@
 #include "hbapiitm.h"
 
 
-HB_FUNC( LXW_FREE )
-{
-   free( hb_parptr( 1 ) );
-}
-
-
 /***************************
  * HARBOUR  FONT UTILITIES
  ***************************/

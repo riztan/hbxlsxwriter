@@ -582,18 +582,84 @@ HB_FUNC( WORKSHEET_WRITE_URL )
  *    lxw_rich_string_tuple *rich_strings[],
  *    lxw_format *format)
  */
-/*
 HB_FUNC( WORKSHEET_WRITE_RICH_STRING )
-{ 
+{
    lxw_worksheet *self = hb_parptr( 1 ) ;
-   lxw_row_t row_num = hb_parni( 2 ) ;
-   lxw_col_t col_num = hb_parni( 3 ) ;
-   lxw_rich_string_tuple *rich_strings[] = hb_parptr(4 ) ;
-   lxw_format *format = hb_parptr(5 ) ;
+   lxw_row_t row_num   = hb_parni( 2 ) ;
+   lxw_col_t col_num   = hb_parni( 3 ) ;
+   PHB_ITEM pArray     = hb_param( 4, HB_IT_ARRAY );
+   lxw_format *format  = hb_parptr( 5 );
 
-   hb_retptr( worksheet_write_rich_string( self, row_num, col_num, rich_strings[], format ) ); 
+   if( pArray && HB_IS_ARRAY( pArray ) && hb_arrayLen( pArray ) > 0 )
+   {
+      HB_SIZE nLen = hb_arrayLen( pArray );
+      lxw_rich_string_tuple **rich_strings = ( lxw_rich_string_tuple **) 
+                                               hb_xalloc( sizeof( lxw_rich_string_tuple ) 
+                                                          * nLen );
+
+      HB_SIZE nPos = 0;
+      while( ++nPos <= nLen )
+      {
+
+         PHB_ITEM pHash = hb_arrayGetItemPtr( pArray, nPos ) ;
+         lxw_rich_string_tuple *tuple = ( lxw_rich_string_tuple *) 
+                                          hb_xalloc( sizeof( lxw_rich_string_tuple ) );
+
+         if( pHash && hb_hashLen(pHash) > 0 )
+         {
+
+            HB_SIZE  nLenHash = hb_hashLen( pHash ), nPosHash = 0;
+
+            while( ++nPosHash <= nLenHash  ){
+
+               PHB_ITEM pKey     = hb_hashGetKeyAt( pHash, nPosHash );
+               PHB_ITEM pValue   = hb_hashGetValueAt( pHash, nPosHash );
+
+               char *key = (char *)hb_itemGetC( pKey );
+
+               if( hb_stricmp( key, "format" ) == 0 ){
+                  tuple->format = (lxw_format *) hb_itemGetPtr( pValue ) ;
+
+               }
+               if( hb_stricmp( key, "string" ) == 0 ){
+                  tuple->string = (char *) hb_itemGetC( pValue ) ;
+               }
+
+            }
+            rich_strings[ nPos-1 ] = ( lxw_rich_string_tuple *) tuple;
+
+         }
+         else{
+            hb_errRT_BASE( EG_ARG, 0, "Not LXW_RICH_STRING Hash ", HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+	    return;
+         }
+      }
+      if ( nLen>0 ){
+
+         hb_retni( worksheet_write_rich_string( self, row_num, col_num, rich_strings, format ) ); 
+
+	 nPos = 0;
+	 while( rich_strings[ nPos ] ){
+            hb_xfree( rich_strings[ nPos ] );
+	    nPos++;
+	 }
+
+
+         hb_xfree( rich_strings );
+      }
+      else{
+         hb_errRT_BASE( EG_ARG, 0, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      }
+
+   }
+   else{
+      hb_errRT_BASE( EG_ARG, 0, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+
 }
-*/
+
+
+
 
 
 /*
@@ -1617,7 +1683,6 @@ HB_FUNC( WORKSHEET_DATA_VALIDATION_CELL )
                                            row, col, validation));
 }
 */
-
 HB_FUNC( WORKSHEET_DATA_VALIDATION_CELL )
 {
    lxw_worksheet *self = hb_parptr( 1 );
@@ -1640,142 +1705,142 @@ HB_FUNC( WORKSHEET_DATA_VALIDATION_CELL )
       {
          PHB_ITEM pKey = hb_hashGetKeyAt( pHash, nPos );
          PHB_ITEM pValue = hb_hashGetValueAt( pHash, nPos );
-	 if( pKey && pValue )
-	 {
-	    char *key = (char *)hb_itemGetC( pKey );
-	    if( HB_IS_NUMERIC( pValue ) )
-	    {
+         if( pKey && pValue )
+         {
+            char *key = (char *)hb_itemGetC( pKey );
+            if( HB_IS_NUMERIC( pValue ) )
+            {
                if( HB_IS_NUMINT( pValue ) ){
- 	          HB_MAXINT value = hb_itemGetNInt( pValue );
-	          if( hb_stricmp( key, "validate" ) == 0 ){
-	   	       validation->validate = value;
-	          }
-	          else if( hb_stricmp( key, "criteria" ) == 0 ){
-	   	       validation->criteria = value;
-	          }
-	          else if( hb_stricmp( key, "ignore_blank" ) == 0 ){
-	   	       validation->ignore_blank = value;
-	          }
-	          else if( hb_stricmp( key, "show_input" ) == 0 ){
-	   	       validation->show_input = value;
-	          }
-	          else if( hb_stricmp( key, "show_error" ) == 0 ){
-	   	       validation->show_error = value;
-	          }
-	          else if( hb_stricmp( key, "error_type" ) == 0 ){
-	   	       validation->error_type = value;
-	          }
-	          else if( hb_stricmp( key, "dropdown" ) == 0 ){
-	   	       validation->dropdown = value;
-	          }
-	          else if( hb_stricmp( key, "is_between" ) == 0 ){
-	   	       validation->is_between = value;
-	          }
-		  else if( hb_stricmp( key, "value_number" ) == 0 ){
-	   	       validation->value_number = value;
-	          }
-	          else if( hb_stricmp( key, "minimum_number" ) == 0 ){
-	   	       validation->minimum_number = value;
-	          }
-	          else if( hb_stricmp( key, "maximum_number" ) == 0 ){
-	   	       validation->maximum_number = value;
-	          }
-	       }
-	       else if( HB_IS_NUMERIC( pValue ) || HB_IS_DOUBLE( pValue ) )
-   	       {
-	          double value = hb_itemGetND( pValue );
-	          if( hb_stricmp( key, "value_number" ) == 0 ){
-	   	       validation->value_number = value;
-	          }
-	          else if( hb_stricmp( key, "minimum_number" ) == 0 ){
-	   	       validation->minimum_number = value;
-	          }
-	          else if( hb_stricmp( key, "maximum_number" ) == 0 ){
-	   	       validation->maximum_number = value;
-	          }
-	       }
-	    }
-	    else if( HB_IS_STRING( pValue ) )
-	    {
-	       char *value = (char *) hb_itemGetC( pValue );
-	       if( hb_stricmp( key, "minimum_formula" ) == 0 ){
-	   	    validation->minimum_formula = value;
-	       }
-	       else if( hb_stricmp( key, "value_formula" ) == 0 ){
-	   	    validation->value_formula = value;
-	       }
-	       else if( hb_stricmp( key, "minimum_formula" ) == 0 ){
-	   	    validation->minimum_formula = value;
-	       }
-	       else if( hb_stricmp( key, "maximum_formula" ) == 0 ){
-	   	    validation->maximum_formula = value;
-	       }
-	       else if( hb_stricmp( key, "input_title" ) == 0 ){
-	   	    validation->input_title = value;
-	       }
-	       else if( hb_stricmp( key, "input_message" ) == 0 ){
-	   	    validation->input_message = value;
-	       }
-	       else if( hb_stricmp( key, "error_title" ) == 0 ){
-	   	    validation->error_title = value;
-	       }
-	       else if( hb_stricmp( key, "error_message" ) == 0 ){
-	   	    validation->error_message = value;
-	       }
-	    }
-	    else if( HB_IS_DATETIME( pValue ) )
-	    {
-               lxw_datetime datetime;
-	       long lDate, lTime;  
-
-               if( hb_itemGetTDT( pValue, &lDate, &lTime ) )
-               {
-                   int iYear, iMonth, iDay ;
-                   int iHour, iMin, iSec, iMSec ;
-
-                   hb_timeDecode( lTime, &iHour, &iMin, &iSec, &iMSec );
-                   hb_dateDecode( lDate, &iYear, &iMonth, &iDay );
-
-                   datetime.year = iYear;
-                   datetime.month = iMonth;
-                   datetime.day = iDay;
-                   datetime.hour = iHour;
-                   datetime.min = iMin;
-                   datetime.sec = iSec;
-
-	           if( hb_stricmp( key, "value_datetime" ) == 0 ){
-	   	        validation->value_datetime = datetime;
-	           }
-		   else if( hb_stricmp( key, "minimum_datetime" ) == 0 ){
-	   	        validation->minimum_datetime = datetime;
-	           }
-		   else if( hb_stricmp( key, "maximum_datetime" ) == 0 ){
-	   	        validation->maximum_datetime = datetime;
-	           }
+                  HB_MAXINT value = hb_itemGetNInt( pValue );
+                  if( hb_stricmp( key, "validate" ) == 0 ){
+                     validation->validate = value;
+                  }
+                  else if( hb_stricmp( key, "criteria" ) == 0 ){
+                     validation->criteria = value;
+                  }
+                  else if( hb_stricmp( key, "ignore_blank" ) == 0 ){
+                     validation->ignore_blank = value;
+                  }
+                  else if( hb_stricmp( key, "show_input" ) == 0 ){
+                     validation->show_input = value;
+                  }
+                  else if( hb_stricmp( key, "show_error" ) == 0 ){
+                     validation->show_error = value;
+                  }
+                  else if( hb_stricmp( key, "error_type" ) == 0 ){
+                     validation->error_type = value;
+                  }
+                  else if( hb_stricmp( key, "dropdown" ) == 0 ){
+                     validation->dropdown = value;
+                  }
+                  else if( hb_stricmp( key, "is_between" ) == 0 ){
+                     validation->is_between = value;
+                  }
+                  else if( hb_stricmp( key, "value_number" ) == 0 ){
+                     validation->value_number = value;
+                  }
+                  else if( hb_stricmp( key, "minimum_number" ) == 0 ){
+                     validation->minimum_number = value;
+                  }
+                  else if( hb_stricmp( key, "maximum_number" ) == 0 ){
+                     validation->maximum_number = value;
+                  }
                }
-	    }
-	    else if( HB_IS_ARRAY( pValue ) )
-	    {
-		HB_SIZE nLen = hb_itemSize( pValue );
-		if( nLen )
-		{
-		    validation->value_list = (char **) hb_xalloc( sizeof( char* ) * (nLen+1) );
-		    if( validation->value_list == NULL )
-		    {
-                        hb_errRT_BASE( EG_MEM, 0, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
-		    }
-		    else
-		    {
-                       memset( validation->value_list, 0, sizeof( char * ) * ( nLen+1 ) );
-		       HB_SIZE nIndex = 0;
-		       while( nIndex<nLen ){
-		   	   validation->value_list[ nIndex ] = hb_arrayGetC( pValue, nIndex+1 );
-			   nIndex++ ;
-		       }
-		    }
-		}
-	    }
-	 }
+               else if( HB_IS_NUMERIC( pValue ) || HB_IS_DOUBLE( pValue ) )
+               {
+                  double value = hb_itemGetND( pValue );
+                  if( hb_stricmp( key, "value_number" ) == 0 ){
+                     validation->value_number = value;
+                  }
+                  else if( hb_stricmp( key, "minimum_number" ) == 0 ){
+                     validation->minimum_number = value;
+                  }
+                  else if( hb_stricmp( key, "maximum_number" ) == 0 ){
+                     validation->maximum_number = value;
+                  }
+              }
+          }
+          else if( HB_IS_STRING( pValue ) )
+          {
+             char *value = (char *) hb_itemGetC( pValue );
+             if( hb_stricmp( key, "minimum_formula" ) == 0 ){
+                validation->minimum_formula = value;
+             }
+             else if( hb_stricmp( key, "value_formula" ) == 0 ){
+                validation->value_formula = value;
+             }
+             else if( hb_stricmp( key, "minimum_formula" ) == 0 ){
+                validation->minimum_formula = value;
+             }
+             else if( hb_stricmp( key, "maximum_formula" ) == 0 ){
+                validation->maximum_formula = value;
+             }
+             else if( hb_stricmp( key, "input_title" ) == 0 ){
+                validation->input_title = value;
+             }
+             else if( hb_stricmp( key, "input_message" ) == 0 ){
+                validation->input_message = value;
+             }
+             else if( hb_stricmp( key, "error_title" ) == 0 ){
+                validation->error_title = value;
+             }
+             else if( hb_stricmp( key, "error_message" ) == 0 ){
+                validation->error_message = value;
+             }
+          }
+          else if( HB_IS_DATETIME( pValue ) )
+          {
+             lxw_datetime datetime;
+             long lDate, lTime;  
+
+             if( hb_itemGetTDT( pValue, &lDate, &lTime ) )
+             {
+                int iYear, iMonth, iDay ;
+                int iHour, iMin, iSec, iMSec ;
+
+                hb_timeDecode( lTime, &iHour, &iMin, &iSec, &iMSec );
+                hb_dateDecode( lDate, &iYear, &iMonth, &iDay );
+
+                datetime.year = iYear;
+                datetime.month = iMonth;
+                datetime.day = iDay;
+                datetime.hour = iHour;
+                datetime.min = iMin;
+                datetime.sec = iSec;
+
+                if( hb_stricmp( key, "value_datetime" ) == 0 ){
+                   validation->value_datetime = datetime;
+                }
+                else if( hb_stricmp( key, "minimum_datetime" ) == 0 ){
+                   validation->minimum_datetime = datetime;
+                }
+                else if( hb_stricmp( key, "maximum_datetime" ) == 0 ){
+                   validation->maximum_datetime = datetime;
+                }
+             }
+          }
+          else if( HB_IS_ARRAY( pValue ) )
+          {
+             HB_SIZE nLen = hb_itemSize( pValue );
+             if( nLen )
+             {
+                validation->value_list = (char **) hb_xalloc( sizeof( char* ) * (nLen+1) );
+                if( validation->value_list == NULL )
+                {
+                   hb_errRT_BASE( EG_MEM, 0, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+                }
+                else
+                {
+                     memset( validation->value_list, 0, sizeof( char * ) * ( nLen+1 ) );
+                     HB_SIZE nIndex = 0;
+                     while( nIndex<nLen ){
+                        validation->value_list[ nIndex ] = hb_arrayGetC( pValue, nIndex+1 );
+                        nIndex++ ;
+                     }
+                  }
+               }
+            }
+         }
       }
       if( validation ){
          hb_retni( worksheet_data_validation_range(self, row, col,
@@ -1784,8 +1849,8 @@ HB_FUNC( WORKSHEET_DATA_VALIDATION_CELL )
          if( validation->value_list ){
             while( validation->value_list[nIndex] )
             {
-                hb_xfree( validation->value_list[nIndex] );
-                nIndex++;
+               hb_xfree( validation->value_list[nIndex] );
+               nIndex++;
             }
          }
          hb_xfree( validation );
