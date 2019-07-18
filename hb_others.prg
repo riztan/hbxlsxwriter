@@ -1,5 +1,5 @@
 /*
- * hb_data_validation.prg  A library for creating Excel XLSX worksheet files.
+ * hb_others.prg  A library for creating Excel XLSX worksheet files.
  *
  * Used in conjunction with the libxlsxwriter library of
  * John McNamara, jmcnamara@cpan.org. See LICENSE.txt.
@@ -29,5 +29,7 @@ FUNCTION hb_lxw_dv( hDV, cKey, uValue )
    hb_HSet( hDV, cKey, uValue )
 
    RETURN .T.
+
+
 
 // eof

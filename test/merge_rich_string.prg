@@ -3,6 +3,8 @@
  *
  * Copyright 2014-2018, John McNamara, jmcnamara@cpan.org
  *
+ * Adapted for Harbour by Riztan Gutierrez, riztan@gmail.com
+ *
  */
 
 #include "hbxlsxwriter.ch"
