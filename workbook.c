@@ -157,7 +157,7 @@ HB_FUNC( WORKBOOK_NEW_OPT )
 HB_FUNC( WORKBOOK_ADD_WORKSHEET )
 { 
    lxw_workbook *self = hb_parptr(1);
-   const char *sheetname = hb_param(2, HB_IT_ANY);
+   const char *sheetname = hb_parcx( 2 );
    if HB_ISNIL( 2 ) 
    {
       hb_retptr( workbook_add_worksheet( self, NULL ) );
