@@ -1106,9 +1106,9 @@ HB_FUNC( WORKSHEET_SET_HEADER_OPT )
 { 
    lxw_worksheet *self = hb_parptr( 1 ) ;
    const char *string = hb_parcx( 2 ) ;
-   lxw_header_footer_options *options = hb_parptr(3 ) ;
+   lxw_header_footer_options options = { hb_parnd( 3 ) } ;
 
-   hb_retni( worksheet_set_header_opt( self, string, options) ); 
+   hb_retni( worksheet_set_header_opt( self, string, &options) ); 
 }
 
 
@@ -1126,9 +1126,9 @@ HB_FUNC( WORKSHEET_SET_FOOTER_OPT )
 { 
    lxw_worksheet *self = hb_parptr( 1 ) ;
    const char *string = hb_parcx( 2 ) ;
-   lxw_header_footer_options *options = hb_parptr(3 ) ;
+   lxw_header_footer_options options = { hb_parnd( 3 ) } ;
 
-   hb_retni( worksheet_set_footer_opt( self, string, options) ); 
+   hb_retni( worksheet_set_footer_opt( self, string, &options) ); 
 }
 
 
