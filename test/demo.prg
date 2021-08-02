@@ -11,7 +11,7 @@
 
 PROCEDURE Main()
 
-   LOCAL workbook, worksheet, format
+   LOCAL workbook, worksheet, format, options
 
    /* Create a new workbook and add a worksheet. */
    workbook  := workbook_new( "demo.xlsx" )
@@ -38,6 +38,13 @@ PROCEDURE Main()
 
    /* Insert an image. */
    worksheet_insert_image( worksheet, 1, 2, "hb_logo.png" )
+
+   /* Insert an image with options. */
+   options := {"x_scale" => .5, "y_scale" => .5 }
+   worksheet_insert_image_opt( worksheet, CELL("B15"), "hb_logo.png", options )
+
+   options := {"x_offset"=> 10 , "y_offset" => 5 }
+   worksheet_insert_image_opt( worksheet, CELL("G2"), "hb_logo.png", options )
 
    workbook_close( workbook )
 
