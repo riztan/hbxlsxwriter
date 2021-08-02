@@ -84,17 +84,17 @@ lxw_image_options *image_options( PHB_ITEM pHash )
                   else if( hb_stricmp( key, "y_dpi" ) == 0 ){
                      image_data->y_dpi = value;
                   }
-               }
-	       else if( HB_IS_NUMINT( pValue ) )
-               {
-                  HB_MAXINT value = hb_itemGetNInt( pValue );
                   if( hb_stricmp( key, "x_offset" ) == 0 ){
                      image_data->x_offset = value;
                   }
                   else if( hb_stricmp( key, "y_offset" ) == 0 ){
                      image_data->y_offset = value;
                   }
-                  else if( hb_stricmp( key, "anchor" ) == 0 ){
+               }
+	       else if( HB_IS_NUMINT( pValue ) )
+               {
+                  HB_MAXINT value = hb_itemGetNInt( pValue );
+                  if( hb_stricmp( key, "anchor" ) == 0 ){
                      image_data->anchor = value;
                   }
                   else if( hb_stricmp( key, "image_type" ) == 0 ){
@@ -302,35 +302,6 @@ HB_FUNC( LXW_WORKSHEET_PREPARE_IMAGE )
    hb_xfree( image_data );
 }
 
-/*
-   if( pHash ){
-      HB_SIZE nLen = hb_hashLen( pHash ) ;
-      HB_SIZE nStart = 1 ;
-      HB_SIZE nCount = 0 ;
-      nCount = nLen - nStart + 1;
-
-      while( nCount-- )
-      {
-	 PHB_ITEM pKey   = hb_hashGetKeyAt( pHash, nStart );
-	 PHB_ITEM pValue = hb_hashGetValueAt( pHash, nStart );
-	 if( pKey && pValue )
-         {
-            //if( char *pKey == 'x_scale' ){
-               //image_data.x_scale = pValue; 
-	       //printf( hb_hashGetItemPtr( pHash, pKey, HB_HASH_AUTOADD_ACCESS) ) ; //pKey->item.asString.value );
-	       printf( "hola" );
-	    //}
-	 }
-         ++nStart;
-      }
-
-   }
-   lxw_worksheet_prepare_image( self, image_ref_id, drawing_id, image_data ); 
-   //else
-   //   hb_errRT_BASE( EG_ARG, 1123, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
- 
-}
-*/
 
 /*
  * Set up chart/drawings.
@@ -447,9 +418,6 @@ HB_FUNC( WORKSHEET_WRITE_NUMBER )
 
 
 
-
-
-
 /*
  * Write a string to an Excel file.
  *
@@ -470,7 +438,6 @@ HB_FUNC( WORKSHEET_WRITE_STRING )
 
    hb_retni( worksheet_write_string( self, row_num, col_num, string, format) ); 
 }
-
 
 
 
@@ -1864,7 +1831,7 @@ HB_FUNC( WORKSHEET_INSERT_CHART_OPT )
       lxw_image_options *user_options = image_options( pHash ) ;
 
       hb_retni( worksheet_insert_chart_opt( self, row_num, col_num, chart, user_options ) ); 
-      hb_xfree( image_data );
+      hb_xfree( user_options );
    }
 }
 
