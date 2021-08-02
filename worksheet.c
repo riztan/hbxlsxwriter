@@ -37,6 +37,107 @@
 
 
 /*
+ *  
+ */
+lxw_image_options *image_options( PHB_ITEM pHash )
+{
+   if( HB_IS_HASH( pHash ) )
+   {
+      lxw_image_options *image_data = (lxw_image_options *) hb_xalloc( sizeof(lxw_image_options) ); 
+ 
+      memset( image_data, 0, sizeof( lxw_image_options) );
+
+      HB_SIZE nLen = hb_hashLen( pHash ), nPos = 0;
+
+      while( ++nPos <= nLen )
+      {
+         PHB_ITEM pKey = hb_hashGetKeyAt( pHash, nPos );
+         PHB_ITEM pValue = hb_hashGetValueAt( pHash, nPos );
+         if( pKey && pValue )
+         {
+            char *key = (char *)hb_itemGetC( pKey );
+
+	    if( hb_stricmp( key, "chart" ) == 0 ){
+               image_data->chart = pValue;
+            }
+
+            if( HB_IS_NUMERIC( pValue ) )
+            {
+               if( HB_IS_NUMERIC( pValue ) || HB_IS_DOUBLE( pValue ) )
+	       {
+                  double value = hb_itemGetND( pValue );
+                  if( hb_stricmp( key, "x_scale" ) == 0 ){
+                     image_data->x_scale = value;
+                  }
+                  else if( hb_stricmp( key, "y_scale" ) == 0 ){
+                     image_data->y_scale = value;
+                  }
+                  else if( hb_stricmp( key, "width" ) == 0 ){
+                     image_data->width = value;
+                  }
+                  else if( hb_stricmp( key, "height" ) == 0 ){
+                     image_data->height = value;
+                  }
+                  else if( hb_stricmp( key, "x_dpi" ) == 0 ){
+                     image_data->x_dpi = value;
+		  }
+                  else if( hb_stricmp( key, "y_dpi" ) == 0 ){
+                     image_data->y_dpi = value;
+                  }
+               }
+	       else if( HB_IS_NUMINT( pValue ) )
+               {
+                  HB_MAXINT value = hb_itemGetNInt( pValue );
+                  if( hb_stricmp( key, "x_offset" ) == 0 ){
+                     image_data->x_offset = value;
+                  }
+                  else if( hb_stricmp( key, "y_offset" ) == 0 ){
+                     image_data->y_offset = value;
+                  }
+                  else if( hb_stricmp( key, "anchor" ) == 0 ){
+                     image_data->anchor = value;
+                  }
+                  else if( hb_stricmp( key, "image_type" ) == 0 ){
+                     image_data->image_type = value;
+                  }
+                  else if( hb_stricmp( key, "is_image_buffer" ) == 0 ){
+                     image_data->is_image_buffer = value;
+                  }
+                  else if( hb_stricmp( key, "image_buffer_size" ) == 0 ){
+                     image_data->image_buffer_size = value;
+                  }
+	       }
+            }
+            else if( HB_IS_STRING( pValue ) )
+            {
+                char *value = (char *) hb_itemGetC( pValue );
+
+                if( hb_stricmp( key, "filename" ) == 0 ){
+                   image_data->filename = value;
+                }
+                else if( hb_stricmp( key, "description" ) == 0 ){
+                   image_data->description = value;
+                }
+                else if( hb_stricmp( key, "url" ) == 0 ){
+                   image_data->url = value;
+                }
+                else if( hb_stricmp( key, "tip" ) == 0 ){
+                   image_data->tip = value;
+                }
+            }
+	 }
+      }
+      if( image_data ){
+         //return image_data ; 
+         return image_data; 
+         //return (lxw_image_options ) image_data; 
+      }
+   }
+   return 0;
+}
+
+
+/*
  * Find but don't create a row object for a given row number.
  *
  * lxw_row *
@@ -171,6 +272,13 @@ HB_FUNC( _VALIDATION_LIST_TO_CSV )
  ****************************************************************************/
 
 
+//#include "hbvmint.h"
+//#include "hbapi.h"
+//#include "hbapiitm.h"
+//#include "hbapierr.h"
+//#include "hbapilng.h"
+//#include "hbvm.h"
+#include "hbstack.h"
 /*
  * Set up image/drawings.
  *
@@ -185,11 +293,44 @@ HB_FUNC( LXW_WORKSHEET_PREPARE_IMAGE )
    lxw_worksheet *self = hb_parptr( 1 ) ;
    uint16_t image_ref_id = hb_parnl( 2 ) ;
    uint16_t drawing_id = hb_parnl( 3 ) ;
-   lxw_image_options *image_data = hb_parptr(4 ) ; //REVISAR (RIGC 2019-05-24)
+
+   PHB_ITEM pHash = hb_param( 4, HB_IT_HASH );
+
+   lxw_image_options *image_data = image_options( pHash ) ;
 
    lxw_worksheet_prepare_image( self, image_ref_id, drawing_id, image_data ); 
+   hb_xfree( image_data );
 }
 
+/*
+   if( pHash ){
+      HB_SIZE nLen = hb_hashLen( pHash ) ;
+      HB_SIZE nStart = 1 ;
+      HB_SIZE nCount = 0 ;
+      nCount = nLen - nStart + 1;
+
+      while( nCount-- )
+      {
+	 PHB_ITEM pKey   = hb_hashGetKeyAt( pHash, nStart );
+	 PHB_ITEM pValue = hb_hashGetValueAt( pHash, nStart );
+	 if( pKey && pValue )
+         {
+            //if( char *pKey == 'x_scale' ){
+               //image_data.x_scale = pValue; 
+	       //printf( hb_hashGetItemPtr( pHash, pKey, HB_HASH_AUTOADD_ACCESS) ) ; //pKey->item.asString.value );
+	       printf( "hola" );
+	    //}
+	 }
+         ++nStart;
+      }
+
+   }
+   lxw_worksheet_prepare_image( self, image_ref_id, drawing_id, image_data ); 
+   //else
+   //   hb_errRT_BASE( EG_ARG, 1123, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+ 
+}
+*/
 
 /*
  * Set up chart/drawings.
@@ -207,12 +348,15 @@ HB_FUNC( LXW_WORKSHEET_PREPARE_CHART )
    lxw_worksheet *self = hb_parptr( 1 ) ;
    uint16_t chart_ref_id = hb_parnl( 2 ) ;
    uint16_t drawing_id = hb_parnl( 3 ) ;
-   lxw_image_options *image_data = hb_parptr(4 ) ;
+//   lxw_image_options *image_data = hb_parptr(4 ) ;
+   PHB_ITEM pHash = hb_param( 4, HB_IT_HASH );
    uint8_t is_chartsheet = hb_parni( 5 ) ;
 
-   lxw_worksheet_prepare_chart( self, chart_ref_id, drawing_id, image_data, is_chartsheet) ; 
-}
+   lxw_image_options *image_data = image_options( pHash );
 
+   lxw_worksheet_prepare_chart( self, chart_ref_id, drawing_id, image_data, is_chartsheet) ; 
+   hb_xfree( image_data );
+}
 
 
 
@@ -1544,9 +1688,111 @@ HB_FUNC( WORKSHEET_INSERT_IMAGE_OPT )
    lxw_row_t row_num = hb_parni( 2 ) ;
    lxw_col_t col_num = hb_parni( 3 ) ;
    const char *filename = hb_parcx( 4 ) ;
-   lxw_image_options *user_options = hb_parptr(5 ) ;
+   PHB_ITEM pHash = hb_param( 5, HB_IT_HASH );
 
-   hb_retni( worksheet_insert_image_opt( self, row_num, col_num, filename, user_options ) ); 
+   lxw_image_options *image_data = image_options( pHash ) ;
+
+   hb_retni( worksheet_insert_image_opt( self, row_num, col_num, filename, image_data ) ); 
+   hb_xfree( image_data );
+/*
+   PHB_ITEM pHash = hb_param( 5, HB_IT_HASH );
+
+   lxw_image_options *image_data = (lxw_image_options *) hb_xalloc( sizeof(lxw_image_options) ); 
+
+   if( image_data == NULL )
+   {
+      hb_errRT_BASE( EG_MEM, 0, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+   }
+   memset( image_data, 0, sizeof( lxw_image_options) );
+
+   HB_SIZE nLen = hb_hashLen( pHash ), nPos = 0;
+
+   if( pHash )
+   {
+      while( ++nPos <= nLen )
+      {
+         PHB_ITEM pKey = hb_hashGetKeyAt( pHash, nPos );
+         PHB_ITEM pValue = hb_hashGetValueAt( pHash, nPos );
+         if( pKey && pValue )
+         {
+            char *key = (char *)hb_itemGetC( pKey );
+
+	    if( hb_stricmp( key, "chart" ) == 0 ){
+               image_data->chart = pValue;
+            }
+
+            if( HB_IS_NUMERIC( pValue ) )
+            {
+               if( HB_IS_NUMERIC( pValue ) || HB_IS_DOUBLE( pValue ) )
+	       {
+                  double value = hb_itemGetND( pValue );
+                  if( hb_stricmp( key, "x_scale" ) == 0 ){
+                     image_data->x_scale = value;
+                  }
+                  else if( hb_stricmp( key, "y_scale" ) == 0 ){
+                     image_data->y_scale = value;
+                  }
+                  else if( hb_stricmp( key, "width" ) == 0 ){
+                     image_data->width = value;
+                  }
+                  else if( hb_stricmp( key, "height" ) == 0 ){
+                     image_data->height = value;
+                  }
+                  else if( hb_stricmp( key, "x_dpi" ) == 0 ){
+                     image_data->x_dpi = value;
+		  }
+                  else if( hb_stricmp( key, "y_dpi" ) == 0 ){
+                     image_data->y_dpi = value;
+                  }
+               }
+	       else if( HB_IS_NUMINT( pValue ) )
+               {
+                  HB_MAXINT value = hb_itemGetNInt( pValue );
+                  if( hb_stricmp( key, "x_offset" ) == 0 ){
+                     image_data->x_offset = value;
+                  }
+                  else if( hb_stricmp( key, "y_offset" ) == 0 ){
+                     image_data->y_offset = value;
+                  }
+                  else if( hb_stricmp( key, "anchor" ) == 0 ){
+                     image_data->anchor = value;
+                  }
+                  else if( hb_stricmp( key, "image_type" ) == 0 ){
+                     image_data->image_type = value;
+                  }
+                  else if( hb_stricmp( key, "is_image_buffer" ) == 0 ){
+                     image_data->is_image_buffer = value;
+                  }
+                  else if( hb_stricmp( key, "image_buffer_size" ) == 0 ){
+                     image_data->image_buffer_size = value;
+                  }
+	       }
+            }
+            else if( HB_IS_STRING( pValue ) )
+            {
+                char *value = (char *) hb_itemGetC( pValue );
+
+                if( hb_stricmp( key, "filename" ) == 0 ){
+                   image_data->filename = value;
+                }
+                else if( hb_stricmp( key, "description" ) == 0 ){
+                   image_data->description = value;
+                }
+                else if( hb_stricmp( key, "url" ) == 0 ){
+                   image_data->url = value;
+                }
+                else if( hb_stricmp( key, "tip" ) == 0 ){
+                   image_data->tip = value;
+                }
+            }
+	 }
+      }
+      if( image_data ){
+         hb_retni( worksheet_insert_image_opt( self, row_num, col_num, filename, image_data ) ); 
+         hb_xfree( image_data );
+      }
+   }
+*/
 }
 
 
@@ -1609,10 +1855,17 @@ HB_FUNC( WORKSHEET_INSERT_CHART_OPT )
    lxw_worksheet *self = hb_parptr( 1 ) ;
    lxw_row_t row_num = hb_parni( 2 ) ;
    lxw_col_t col_num = hb_parni( 3 ) ;
-   lxw_chart *chart = hb_parptr(4 ) ;
-   lxw_image_options *user_options = hb_parptr(5 ) ;
+   lxw_chart *chart = hb_parptr( 4 ) ;
+//   lxw_image_options *user_options = hb_parptr( 5 ) ;
+   PHB_ITEM pHash = hb_param( 5, HB_IT_HASH );
+   if( pHash ){
+      //lxw_image_options *user_options ;
+      //lxw_image_options *user_options = (lxw_image_options *) image_options( pHash ) ;
+      lxw_image_options *user_options = image_options( pHash ) ;
 
-   hb_retni( worksheet_insert_chart_opt( self, row_num, col_num, chart, user_options ) ); 
+      hb_retni( worksheet_insert_chart_opt( self, row_num, col_num, chart, user_options ) ); 
+      hb_xfree( image_data );
+   }
 }
 
 
@@ -1710,7 +1963,8 @@ HB_FUNC( WORKSHEET_DATA_VALIDATION_CELL )
             char *key = (char *)hb_itemGetC( pKey );
             if( HB_IS_NUMERIC( pValue ) )
             {
-               if( HB_IS_NUMINT( pValue ) ){
+               if( HB_IS_NUMINT( pValue ) )
+	       {
                   HB_MAXINT value = hb_itemGetNInt( pValue );
                   if( hb_stricmp( key, "validate" ) == 0 ){
                      validation->validate = value;
@@ -1758,79 +2012,79 @@ HB_FUNC( WORKSHEET_DATA_VALIDATION_CELL )
                   else if( hb_stricmp( key, "maximum_number" ) == 0 ){
                      validation->maximum_number = value;
                   }
-              }
-          }
-          else if( HB_IS_STRING( pValue ) )
-          {
-             char *value = (char *) hb_itemGetC( pValue );
-             if( hb_stricmp( key, "minimum_formula" ) == 0 ){
-                validation->minimum_formula = value;
-             }
-             else if( hb_stricmp( key, "value_formula" ) == 0 ){
-                validation->value_formula = value;
-             }
-             else if( hb_stricmp( key, "minimum_formula" ) == 0 ){
-                validation->minimum_formula = value;
-             }
-             else if( hb_stricmp( key, "maximum_formula" ) == 0 ){
-                validation->maximum_formula = value;
-             }
-             else if( hb_stricmp( key, "input_title" ) == 0 ){
-                validation->input_title = value;
-             }
-             else if( hb_stricmp( key, "input_message" ) == 0 ){
-                validation->input_message = value;
-             }
-             else if( hb_stricmp( key, "error_title" ) == 0 ){
-                validation->error_title = value;
-             }
-             else if( hb_stricmp( key, "error_message" ) == 0 ){
-                validation->error_message = value;
-             }
-          }
-          else if( HB_IS_DATETIME( pValue ) )
-          {
-             lxw_datetime datetime;
-             long lDate, lTime;  
+               }
+            }
+            else if( HB_IS_STRING( pValue ) )
+            {
+               char *value = (char *) hb_itemGetC( pValue );
+               if( hb_stricmp( key, "minimum_formula" ) == 0 ){
+                  validation->minimum_formula = value;
+               }
+               else if( hb_stricmp( key, "value_formula" ) == 0 ){
+                  validation->value_formula = value;
+               }
+               else if( hb_stricmp( key, "minimum_formula" ) == 0 ){
+                  validation->minimum_formula = value;
+               }
+               else if( hb_stricmp( key, "maximum_formula" ) == 0 ){
+                  validation->maximum_formula = value;
+               }
+               else if( hb_stricmp( key, "input_title" ) == 0 ){
+                  validation->input_title = value;
+               }
+               else if( hb_stricmp( key, "input_message" ) == 0 ){
+                  validation->input_message = value;
+               }
+               else if( hb_stricmp( key, "error_title" ) == 0 ){
+                  validation->error_title = value;
+               }
+               else if( hb_stricmp( key, "error_message" ) == 0 ){
+                  validation->error_message = value;
+               }
+            }
+            else if( HB_IS_DATETIME( pValue ) )
+            {
+               lxw_datetime datetime;
+               long lDate, lTime;  
 
-             if( hb_itemGetTDT( pValue, &lDate, &lTime ) )
-             {
-                int iYear, iMonth, iDay ;
-                int iHour, iMin, iSec, iMSec ;
+               if( hb_itemGetTDT( pValue, &lDate, &lTime ) )
+               {
+                  int iYear, iMonth, iDay ;
+                  int iHour, iMin, iSec, iMSec ;
 
-                hb_timeDecode( lTime, &iHour, &iMin, &iSec, &iMSec );
-                hb_dateDecode( lDate, &iYear, &iMonth, &iDay );
+                  hb_timeDecode( lTime, &iHour, &iMin, &iSec, &iMSec );
+                  hb_dateDecode( lDate, &iYear, &iMonth, &iDay );
 
-                datetime.year = iYear;
-                datetime.month = iMonth;
-                datetime.day = iDay;
-                datetime.hour = iHour;
-                datetime.min = iMin;
-                datetime.sec = iSec;
+                  datetime.year = iYear;
+                  datetime.month = iMonth;
+                  datetime.day = iDay;
+                  datetime.hour = iHour;
+                  datetime.min = iMin;
+                  datetime.sec = iSec;
 
-                if( hb_stricmp( key, "value_datetime" ) == 0 ){
-                   validation->value_datetime = datetime;
-                }
-                else if( hb_stricmp( key, "minimum_datetime" ) == 0 ){
-                   validation->minimum_datetime = datetime;
-                }
-                else if( hb_stricmp( key, "maximum_datetime" ) == 0 ){
-                   validation->maximum_datetime = datetime;
-                }
-             }
-          }
-          else if( HB_IS_ARRAY( pValue ) )
-          {
-             HB_SIZE nLen = hb_itemSize( pValue );
-             if( nLen )
-             {
-                validation->value_list = (char **) hb_xalloc( sizeof( char* ) * (nLen+1) );
-                if( validation->value_list == NULL )
-                {
-                   hb_errRT_BASE( EG_MEM, 0, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
-                }
-                else
-                {
+                  if( hb_stricmp( key, "value_datetime" ) == 0 ){
+                     validation->value_datetime = datetime;
+                  }
+                  else if( hb_stricmp( key, "minimum_datetime" ) == 0 ){
+                     validation->minimum_datetime = datetime;
+                  }
+                  else if( hb_stricmp( key, "maximum_datetime" ) == 0 ){
+                     validation->maximum_datetime = datetime;
+                  }
+               }
+            }
+            else if( HB_IS_ARRAY( pValue ) )
+            {
+               HB_SIZE nLen = hb_itemSize( pValue );
+               if( nLen )
+               {
+                  validation->value_list = (char **) hb_xalloc( sizeof( char* ) * (nLen+1) );
+                  if( validation->value_list == NULL )
+                  {
+                     hb_errRT_BASE( EG_MEM, 0, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+                  }
+                  else
+                  {
                      memset( validation->value_list, 0, sizeof( char * ) * ( nLen+1 ) );
                      HB_SIZE nIndex = 0;
                      while( nIndex<nLen ){
@@ -1842,7 +2096,8 @@ HB_FUNC( WORKSHEET_DATA_VALIDATION_CELL )
             }
          }
       }
-      if( validation ){
+      if( validation )
+      {
          hb_retni( worksheet_data_validation_range(self, row, col,
                                                    row, col, validation));
          HB_SIZE nIndex = 0;
