@@ -60,13 +60,14 @@ HB_FUNC( LXW_FORMAT_FREE )
  * lxw_format_check_color(lxw_color_t color)
  *
  */
+/*
 HB_FUNC( LXW_FORMAT_CHECK_COLOR )
 { 
    lxw_color_t color = hb_parnl( 1 ) ;
 
    hb_retnl( lxw_format_check_color( color ) ); 
 }
-
+*/
 
 
 
@@ -197,7 +198,7 @@ HB_FUNC( FORMAT_SET_FONT_COLOR )
    lxw_format *self = hb_parptr(1 ) ;
    lxw_color_t color = hb_parnl(2 ) ;
 
-   self->font_color = lxw_format_check_color(color);
+   self->font_color = color; //lxw_format_check_color(color);
 }
 
 

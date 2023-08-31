@@ -37,6 +37,109 @@
 
 
 /*
+ *
+ */
+lxw_header_footer_options *header_footer_options( PHB_ITEM pHash )
+{
+   if( HB_IS_HASH( pHash ) )
+   {
+      lxw_header_footer_options *hfopts = (lxw_header_footer_options *) hb_xalloc( sizeof(lxw_header_footer_options) );
+      memset( hfopts, 0, sizeof( lxw_header_footer_options ) );
+      HB_SIZE nLen = hb_hashLen( pHash ), nPos = 0;
+
+      while( ++nPos <= nLen )
+      {
+         PHB_ITEM pKey = hb_hashGetKeyAt( pHash, nPos );
+	 PHB_ITEM pValue = hb_hashGetValueAt( pHash, nPos );
+         if ( pKey && pValue ) 
+         {
+            char *key = (char *)hb_itemGetC( pKey );
+            if( HB_IS_NUMERIC( pValue ) || HB_IS_DOUBLE( pValue ) )
+            {
+               double value = hb_itemGetND( pValue );
+               if( hb_stricmp( key, "margin" ) == 0 ){
+                  hfopts->margin = value;
+               }
+            }
+            else if( HB_IS_STRING( pValue ) )
+            {
+               char *value = (char *) hb_itemGetC( pValue );
+               if( hb_stricmp( key, "image_left" ) == 0 ){
+                  hfopts->image_left = value;
+               }
+               if( hb_stricmp( key, "image_center" ) == 0 ){
+                  hfopts->image_center = value;
+               }
+               if( hb_stricmp( key, "image_right" ) == 0 ){
+                  hfopts->image_right = value;
+               }
+	    }
+         }
+      }
+   }
+   return 0;
+}
+
+
+/*
+ *
+ */
+lxw_chart_options *chart_options( PHB_ITEM pHash )
+{
+   if( HB_IS_HASH( pHash ) )
+   {
+      lxw_chart_options *chart_options = (lxw_chart_options *) hb_xalloc( sizeof(lxw_chart_options) );
+      memset( chart_options, 0, sizeof( lxw_chart_options ) );
+      HB_SIZE nLen = hb_hashLen( pHash ), nPos = 0;
+
+      while( ++nPos <= nLen )
+      {
+         PHB_ITEM pKey = hb_hashGetKeyAt( pHash, nPos );
+	 PHB_ITEM pValue = hb_hashGetValueAt( pHash, nPos );
+         if ( pKey && pValue ) 
+         {
+            char *key = (char *)hb_itemGetC( pKey );
+            if( HB_IS_NUMERIC( pValue ) || HB_IS_DOUBLE( pValue ) )
+            {
+               double value = hb_itemGetND( pValue );
+               if( hb_stricmp( key, "x_scale" ) == 0 ){
+                  chart_options->x_scale = value;
+               }
+               if( hb_stricmp( key, "y_scale" ) == 0 ){
+                  chart_options->y_scale = value;
+               }
+            }
+	    else if( HB_IS_NUMINT( pValue ) )
+            {
+               HB_MAXINT value = hb_itemGetNInt( pValue );
+               if( hb_stricmp( key, "x_offset" ) == 0 ){
+                  chart_options->x_offset = value;
+               }
+               if( hb_stricmp( key, "y_offset" ) == 0 ){
+                  chart_options->y_offset = value;
+               }
+               if( hb_stricmp( key, "object_position" ) == 0 ){
+                  chart_options->object_position = value;
+               }
+               if( hb_stricmp( key, "object_position" ) == 0 ){
+                  chart_options->object_position = value;
+               }
+	    }
+            else if( HB_IS_STRING( pValue ) )
+            {
+               char *value = (char *) hb_itemGetC( pValue );
+               if( hb_stricmp( key, "description" ) == 0 )
+               {
+                  chart_options->description = value;
+               }
+	    }
+         }
+      }
+   }
+   return 0;
+}
+
+/*
  *  
  */
 lxw_image_options *image_options( PHB_ITEM pHash )
@@ -57,9 +160,9 @@ lxw_image_options *image_options( PHB_ITEM pHash )
          {
             char *key = (char *)hb_itemGetC( pKey );
 
-	    if( hb_stricmp( key, "chart" ) == 0 ){
-               image_data->chart = pValue;
-            }
+//	    if( hb_stricmp( key, "chart" ) == 0 ){
+//               image_data->chart = pValue;
+//            }
 
             if( HB_IS_NUMERIC( pValue ) )
             {
@@ -72,17 +175,19 @@ lxw_image_options *image_options( PHB_ITEM pHash )
                   else if( hb_stricmp( key, "y_scale" ) == 0 ){
                      image_data->y_scale = value;
                   }
-                  else if( hb_stricmp( key, "width" ) == 0 ){
-                     image_data->width = value;
-                  }
-                  else if( hb_stricmp( key, "height" ) == 0 ){
-                     image_data->height = value;
-                  }
-                  else if( hb_stricmp( key, "x_dpi" ) == 0 ){
-                     image_data->x_dpi = value;
-		  }
-                  else if( hb_stricmp( key, "y_dpi" ) == 0 ){
-                     image_data->y_dpi = value;
+                  else if( hb_stricmp( key, "decorative" ) == 0 ){
+                     image_data->decorative = value;
+                  //else if( hb_stricmp( key, "width" ) == 0 ){
+                  //   image_data->width = value;
+                  //}
+                  //else if( hb_stricmp( key, "height" ) == 0 ){
+                  //   image_data->height = value;
+                  //}
+                  //else if( hb_stricmp( key, "x_dpi" ) == 0 ){
+                  //   image_data->x_dpi = value;
+		  //}
+                  //else if( hb_stricmp( key, "y_dpi" ) == 0 ){
+                  //   image_data->y_dpi = value;
                   }
                   if( hb_stricmp( key, "x_offset" ) == 0 ){
                      image_data->x_offset = value;
@@ -91,34 +196,34 @@ lxw_image_options *image_options( PHB_ITEM pHash )
                      image_data->y_offset = value;
                   }
                }
-	       else if( HB_IS_NUMINT( pValue ) )
-               {
-                  HB_MAXINT value = hb_itemGetNInt( pValue );
-                  if( hb_stricmp( key, "anchor" ) == 0 ){
-                     image_data->anchor = value;
-                  }
-                  else if( hb_stricmp( key, "image_type" ) == 0 ){
-                     image_data->image_type = value;
-                  }
-                  else if( hb_stricmp( key, "is_image_buffer" ) == 0 ){
-                     image_data->is_image_buffer = value;
-                  }
-                  else if( hb_stricmp( key, "image_buffer_size" ) == 0 ){
-                     image_data->image_buffer_size = value;
-                  }
-	       }
+	       //else if( HB_IS_NUMINT( pValue ) )
+               //{
+                  //HB_MAXINT value = hb_itemGetNInt( pValue );
+                  //if( hb_stricmp( key, "anchor" ) == 0 ){
+                  //   image_data->anchor = value;
+                  //}
+                  //else if( hb_stricmp( key, "image_type" ) == 0 ){
+                  //   image_data->image_type = value;
+                  //}
+                  //else if( hb_stricmp( key, "is_image_buffer" ) == 0 ){
+                  //   image_data->is_image_buffer = value;
+                  //}
+                  //else if( hb_stricmp( key, "image_buffer_size" ) == 0 ){
+                  //   image_data->image_buffer_size = value;
+                  //}
+	       //}
             }
             else if( HB_IS_STRING( pValue ) )
             {
                 char *value = (char *) hb_itemGetC( pValue );
 
-                if( hb_stricmp( key, "filename" ) == 0 ){
-                   image_data->filename = value;
-                }
-                else if( hb_stricmp( key, "description" ) == 0 ){
-                   image_data->description = value;
-                }
-                else if( hb_stricmp( key, "url" ) == 0 ){
+                //if( hb_stricmp( key, "filename" ) == 0 ){
+                //   image_data->filename = value;
+                //}
+                //else if( hb_stricmp( key, "description" ) == 0 ){
+                //   image_data->description = value;
+                //}
+                if( hb_stricmp( key, "url" ) == 0 ){
                    image_data->url = value;
                 }
                 else if( hb_stricmp( key, "tip" ) == 0 ){
@@ -135,6 +240,130 @@ lxw_image_options *image_options( PHB_ITEM pHash )
    }
    return 0;
 }
+
+
+/**
+ * 
+ */
+lxw_object_properties *object_properties( PHB_ITEM pHash )
+{
+   if( HB_IS_HASH( pHash ) )
+   {
+      lxw_object_properties *object_props = (lxw_object_properties *) hb_xalloc( sizeof(lxw_object_properties) ); 
+ 
+      memset( object_props, 0, sizeof( lxw_object_properties) );
+
+      HB_SIZE nLen = hb_hashLen( pHash ), nPos = 0;
+
+      while( ++nPos <= nLen )
+      {
+         PHB_ITEM pKey = hb_hashGetKeyAt( pHash, nPos );
+         PHB_ITEM pValue = hb_hashGetValueAt( pHash, nPos );
+         if( pKey && pValue )
+         {
+            char *key = (char *)hb_itemGetC( pKey );
+
+            if( HB_IS_NUMERIC( pValue ) )
+            {
+               if( HB_IS_NUMERIC( pValue ) || HB_IS_DOUBLE( pValue ) )
+	       {
+                  double value = hb_itemGetND( pValue );
+                  if( hb_stricmp( key, "x_scale" ) == 0 ){
+                     object_props->x_scale = value;
+                  }
+                  else if( hb_stricmp( key, "y_scale" ) == 0 ){
+                     object_props->y_scale = value;
+                  }
+                  else if( hb_stricmp( key, "decorative" ) == 0 ){
+                     object_props->decorative = value;
+                  }
+                  else if( hb_stricmp( key, "width" ) == 0 ){
+                     object_props->width = value;
+                  }
+                  else if( hb_stricmp( key, "height" ) == 0 ){
+                     object_props->height = value;
+                  }
+                  else if( hb_stricmp( key, "x_dpi" ) == 0 ){
+                     object_props->x_dpi = value;
+		  }
+                  else if( hb_stricmp( key, "y_dpi" ) == 0 ){
+                     object_props->y_dpi = value;
+                  }
+                  if( hb_stricmp( key, "x_offset" ) == 0 ){
+                     object_props->x_offset = value;
+                  }
+                  else if( hb_stricmp( key, "y_offset" ) == 0 ){
+                     object_props->y_offset = value;
+                  }
+               }
+	       else if( HB_IS_NUMINT( pValue ) )
+               {
+                  HB_MAXINT value = hb_itemGetNInt( pValue );
+                  if( hb_stricmp( key, "object_position" ) == 0 ){
+                     object_props->object_position = value;
+                  }
+                  else if( hb_stricmp( key, "image_type" ) == 0 ){
+                     object_props->image_type = value;
+                  }
+                  else if( hb_stricmp( key, "is_image_buffer" ) == 0 ){
+                     object_props->is_image_buffer = value;
+                  }
+                  else if( hb_stricmp( key, "image_buffer_size" ) == 0 ){
+                     object_props->image_buffer_size = value;
+                  }
+                  else if( hb_stricmp( key, "is_duplicate" ) == 0 ){
+                     object_props->is_duplicate = value;
+                  }
+                  else if( hb_stricmp( key, "is_background" ) == 0 ){
+                     object_props->is_background = value;
+                  }
+                  else if( hb_stricmp( key, "decorative" ) == 0 ){
+                     object_props->decorative = value;
+                  }
+	       }
+            }
+            else if( HB_IS_STRING( pValue ) )
+            {
+                char *value = (char *) hb_itemGetC( pValue );
+
+                if( hb_stricmp( key, "filename" ) == 0 ){
+                   object_props->filename = value;
+                }
+                else if( hb_stricmp( key, "description" ) == 0 ){
+                   object_props->description = value;
+                }
+		else if( hb_stricmp( key, "url" ) == 0 ){
+                   object_props->url = value;
+                }
+                else if( hb_stricmp( key, "tip" ) == 0 ){
+                   object_props->tip = value;
+                }
+                else if( hb_stricmp( key, "image_buffer" ) == 0 ){
+                   object_props->image_buffer = value;
+                }
+                else if( hb_stricmp( key, "extension" ) == 0 ){
+                   object_props->extension = value;
+                }
+                else if( hb_stricmp( key, "md5" ) == 0 ){
+                   object_props->md5 = value;
+                }
+                else if( hb_stricmp( key, "image_position" ) == 0 ){
+                   object_props->image_position = value;
+                }
+            }
+	 }
+      }
+      if( object_props ){
+         //return image_data ; 
+         return object_props; 
+         //return (lxw_image_options ) image_data; 
+      }
+   }
+   return 0;
+}
+
+
+
 
 
 /*
@@ -156,15 +385,15 @@ HB_FUNC( LXW_WORKSHEET_FIND_ROW )
  * Find but don't create a cell object for a given row object and col number.
  *
  * lxw_cell *
- * lxw_worksheet_find_cell(lxw_row *row, lxw_col_t col_num)
+ * lxw_worksheet_find_cell_in_row(lxw_row *row, lxw_col_t col_num)
  *
  */
-HB_FUNC( LXW_WORKSHEET_FIND_CELL )
+HB_FUNC( LXW_WORKSHEET_FIND_CELL_IN_ROW )
 { 
    lxw_row *row = hb_parptr(1 ) ;
    lxw_col_t col_num = hb_parni( 2 ) ;
 
-   hb_retptr( lxw_worksheet_find_cell( row, col_num) ); 
+   hb_retptr( lxw_worksheet_find_cell_in_row( row, col_num ) ); 
 }
 
 
@@ -285,7 +514,7 @@ HB_FUNC( _VALIDATION_LIST_TO_CSV )
  * void
  * lxw_worksheet_prepare_image(lxw_worksheet *self,
  *    uint16_t image_ref_id, uint16_t drawing_id,
- *    lxw_image_options *image_data)
+ *    lxw_object_properties *object_props)
  *
  */
 HB_FUNC( LXW_WORKSHEET_PREPARE_IMAGE )
@@ -296,10 +525,10 @@ HB_FUNC( LXW_WORKSHEET_PREPARE_IMAGE )
 
    PHB_ITEM pHash = hb_param( 4, HB_IT_HASH );
 
-   lxw_image_options *image_data = image_options( pHash ) ;
+   lxw_object_properties *object_props = object_properties( pHash ) ;
 
-   lxw_worksheet_prepare_image( self, image_ref_id, drawing_id, image_data ); 
-   hb_xfree( image_data );
+   lxw_worksheet_prepare_image( self, image_ref_id, drawing_id, object_props ); 
+   hb_xfree( object_props );
 }
 
 
@@ -310,7 +539,7 @@ HB_FUNC( LXW_WORKSHEET_PREPARE_IMAGE )
  * lxw_worksheet_prepare_chart(lxw_worksheet *self,
  *    uint16_t chart_ref_id,
  *    uint16_t drawing_id,
- *    lxw_image_options *image_data,
+ *    lxw_object_properties *object_props,
  *    uint8_t is_chartsheet)
  *
  */
@@ -323,10 +552,10 @@ HB_FUNC( LXW_WORKSHEET_PREPARE_CHART )
    PHB_ITEM pHash = hb_param( 4, HB_IT_HASH );
    uint8_t is_chartsheet = hb_parni( 5 ) ;
 
-   lxw_image_options *image_data = image_options( pHash );
+   lxw_object_properties *object_props = object_properties( pHash );
 
-   lxw_worksheet_prepare_chart( self, chart_ref_id, drawing_id, image_data, is_chartsheet) ; 
-   hb_xfree( image_data );
+   lxw_worksheet_prepare_chart( self, chart_ref_id, drawing_id, object_props, is_chartsheet) ; 
+   hb_xfree( object_props );
 }
 
 
@@ -1217,9 +1446,10 @@ HB_FUNC( WORKSHEET_SET_HEADER_OPT )
 { 
    lxw_worksheet *self = hb_parptr( 1 ) ;
    const char *string = hb_parcx( 2 ) ;
-   lxw_header_footer_options options = { hb_parnd( 3 ) } ;
+   PHB_ITEM pHash = hb_param( 3, HB_IT_HASH );
+   lxw_header_footer_options *options = header_footer_options( pHash );
 
-   hb_retni( worksheet_set_header_opt( self, string, &options) ); 
+   hb_retni( worksheet_set_header_opt( self, string, options) ); 
 }
 
 
@@ -1237,9 +1467,11 @@ HB_FUNC( WORKSHEET_SET_FOOTER_OPT )
 { 
    lxw_worksheet *self = hb_parptr( 1 ) ;
    const char *string = hb_parcx( 2 ) ;
-   lxw_header_footer_options options = { hb_parnd( 3 ) } ;
+   //lxw_header_footer_options options = { hb_parnd( 3 ) } ;
+   PHB_ITEM pHash = hb_param( 3, HB_IT_HASH );
+   lxw_header_footer_options *options = header_footer_options( pHash );
 
-   hb_retni( worksheet_set_footer_opt( self, string, &options) ); 
+   hb_retni( worksheet_set_footer_opt( self, string, options) ); 
 }
 
 
@@ -1828,7 +2060,8 @@ HB_FUNC( WORKSHEET_INSERT_CHART_OPT )
    if( pHash ){
       //lxw_image_options *user_options ;
       //lxw_image_options *user_options = (lxw_image_options *) image_options( pHash ) ;
-      lxw_image_options *user_options = image_options( pHash ) ;
+      //lxw_image_options *user_options = image_options( pHash ) ;
+      lxw_chart_options *user_options = chart_options( pHash ) ;
 
       hb_retni( worksheet_insert_chart_opt( self, row_num, col_num, chart, user_options ) ); 
       hb_xfree( user_options );
@@ -1954,9 +2187,9 @@ HB_FUNC( WORKSHEET_DATA_VALIDATION_CELL )
                   else if( hb_stricmp( key, "dropdown" ) == 0 ){
                      validation->dropdown = value;
                   }
-                  else if( hb_stricmp( key, "is_between" ) == 0 ){
-                     validation->is_between = value;
-                  }
+                  //else if( hb_stricmp( key, "is_between" ) == 0 ){
+                  //   validation->is_between = value;
+                  //}
                   else if( hb_stricmp( key, "value_number" ) == 0 ){
                      validation->value_number = value;
                   }
