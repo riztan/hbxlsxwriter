@@ -402,7 +402,7 @@ HB_FUNC( LXW_WORKSHEET_FIND_CELL )
 {
    lxw_row *row = hb_parptr( 1 );
    lxw_col_t col_num = hb_parni( 2 );
-   hb_retni( lxw_worksheet_find_cell( row, col_num ) );
+   hb_retptr( lxw_worksheet_find_cell( row, col_num ) );
 }
 */
 
@@ -944,7 +944,7 @@ HB_FUNC( WORKSHEET_WRITE_RICH_STRING )
       HB_SIZE nLen = hb_arrayLen( pArray );
       lxw_rich_string_tuple **rich_strings = ( lxw_rich_string_tuple **) 
                                                hb_xalloc( sizeof( lxw_rich_string_tuple ) 
-                                                          * nLen );
+                                                          * ( nLen+1 ) );
 
       HB_SIZE nPos = 0;
       while( ++nPos <= nLen )
@@ -983,6 +983,7 @@ HB_FUNC( WORKSHEET_WRITE_RICH_STRING )
 	    return;
          }
       }
+      rich_strings[ nPos-1 ] = NULL;
       if ( nLen>0 ){
 
          hb_retni( worksheet_write_rich_string( self, row_num, col_num, rich_strings, format ) ); 
@@ -1455,6 +1456,7 @@ HB_FUNC( WORKSHEET_SET_HEADER_OPT )
 { 
    lxw_worksheet *self = hb_parptr( 1 ) ;
    const char *string = hb_parcx( 2 ) ;
+   //lxw_header_footer_options options = { hb_parnd( 3 ) } ;
    PHB_ITEM pHash = hb_param( 3, HB_IT_HASH );
    lxw_header_footer_options *options = header_footer_options( pHash );
 
@@ -2196,9 +2198,9 @@ HB_FUNC( WORKSHEET_DATA_VALIDATION_CELL )
                   else if( hb_stricmp( key, "dropdown" ) == 0 ){
                      validation->dropdown = value;
                   }
-                  //else if( hb_stricmp( key, "is_between" ) == 0 ){
-                  //   validation->is_between = value;
-                  //}
+//                  else if( hb_stricmp( key, "is_between" ) == 0 ){
+//                     validation->is_between = value;
+//                  }
                   else if( hb_stricmp( key, "value_number" ) == 0 ){
                      validation->value_number = value;
                   }
