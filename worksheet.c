@@ -397,6 +397,15 @@ HB_FUNC( LXW_WORKSHEET_FIND_CELL_IN_ROW )
 }
 
 
+/*
+HB_FUNC( LXW_WORKSHEET_FIND_CELL )
+{
+   lxw_row *row = hb_parptr( 1 );
+   lxw_col_t col_num = hb_parni( 2 );
+   hb_retni( lxw_worksheet_find_cell( row, col_num ) );
+}
+*/
+
 
 /*
  * Create a new worksheet object.
@@ -2314,5 +2323,46 @@ HB_FUNC( WORKSHEET_DATA_VALIDATION_CELL )
 
 }
 
+
+
+/**
+ * @brief Add a data validation to a range.
+ *
+ * lxw_error worksheet_data_validation_range(lxw_worksheet *worksheet,
+                                          lxw_row_t first_row,
+                                          lxw_col_t first_col,
+                                          lxw_row_t last_row,
+                                          lxw_col_t last_col,
+                                          lxw_data_validation *validation);
+ TODO:
+ */
+
+
+
+/**
+ * @brief Add a conditional format to a worksheet range.
+ *
+ * lxw_error worksheet_conditional_format_range(lxw_worksheet *worksheet,
+                                             lxw_row_t first_row,
+                                             lxw_col_t first_col,
+                                             lxw_row_t last_row,
+                                             lxw_col_t last_col,
+                                             lxw_conditional_format
+                                             *conditional_format);
+ TODO:
+ */
+
+
+
+/**
+ * @brief Insert a button object into a worksheet.
+ *
+ * lxw_error worksheet_insert_button(lxw_worksheet *worksheet, 
+ *                                   lxw_row_t row,
+ *                                   lxw_col_t col, 
+ *                                   lxw_button_options *options)
+ *
+ TODO:
+ */
 
 //eof

@@ -1133,6 +1133,18 @@ HB_FUNC( CHART_AXIS_SET_CROSSING_MAX )
 
 
 
+/**
+ * @brief Set the opposite axis crossing position as the axis minimum.
+ *
+ * void chart_axis_set_crossing_min(lxw_chart_axis *axis)
+ */
+HB_FUNC( CHART_AXIS_SET_CROSSING_MIN )
+{
+   lxw_chart_axis *axis = hb_parptr( 1 );
+
+   chart_axis_set_crossing_min( axis );
+}
+
 
 
 /*
@@ -1976,6 +1988,22 @@ HB_FUNC( CHART_SET_ROTATION )
 
    chart_set_rotation(self, rotation) ; 
 }
+
+
+
+/**
+ * @brief Set the Doughnut chart hole size.
+ *
+ * void chart_set_hole_size(lxw_chart *chart, uint8_t size);
+ */
+HB_FUNC( CHART_SET_HOLE_SIZE )
+{
+   lxw_chart *self = hb_parptr( 1 );
+   uint8_t size = hb_parni( 2 ) ;
+
+   chart_set_hole_size( self, size );
+}
+
 
 
 //eof
