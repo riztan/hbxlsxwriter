@@ -23,6 +23,11 @@ PROCEDURE Main()
    /* Set the bold property for the format */
    format_set_bold( format )
 
+   format_set_pattern( format, LXW_PATTERN_SOLID )
+   format_set_font_color( format, LXW_COLOR_CYAN )
+   format_set_bg_color( format, LXW_COLOR_BLUE )
+
+
    /* Change the column width for clarity. */
    worksheet_set_column( worksheet, 0, 0, 20 )
 

@@ -3,6 +3,8 @@
 
 -o${hb_name}
 
+-hbx=${hb_name}.hbx
+
 -w3 -es2
 
 -depkeyhead=xlsxwriter:xlsxwriter.h
