@@ -199,7 +199,7 @@ HB_FUNC( WORKBOOK_ADD_CHARTSHEET )
 HB_FUNC( WORKBOOK_ADD_CHART )
 { 
    lxw_workbook *self = hb_parptr( 1 ) ;
-   uint8_t type = hb_parni( 2 ) ;
+   uint8_t type = (uint8_t) hb_parni( 2 ) ;
 
    hb_retptr( workbook_add_chart( self, type ) ); 
 }
@@ -352,7 +352,7 @@ HB_FUNC( WORKBOOK_SET_CUSTOM_PROPERTY_BOOLEAN )
 { 
    lxw_workbook *self = hb_parptr( 1 ) ;
    const char *name = hb_parcx( 2 ) ;
-   uint8_t value = hb_parni( 3 ) ;
+   uint8_t value = (uint8_t) hb_parni( 3 ) ;
 
    hb_retni( workbook_set_custom_property_boolean( self, name, value ) ); 
 }
@@ -482,3 +482,4 @@ HB_FUNC( WORKBOOK_UNSET_DEFAULT_URL_FORMAT )
 
 
 //eof
+

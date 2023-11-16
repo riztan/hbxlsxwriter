@@ -113,16 +113,16 @@ lxw_chart_options *chart_options( PHB_ITEM pHash )
             {
                HB_MAXINT value = hb_itemGetNInt( pValue );
                if( hb_stricmp( key, "x_offset" ) == 0 ){
-                  chart_options->x_offset = value;
+                  chart_options->x_offset = (int32_t) value;
                }
                if( hb_stricmp( key, "y_offset" ) == 0 ){
-                  chart_options->y_offset = value;
+                  chart_options->y_offset = (int32_t) value;
                }
                if( hb_stricmp( key, "object_position" ) == 0 ){
-                  chart_options->object_position = value;
+                  chart_options->object_position = (uint8_t) value;
                }
                if( hb_stricmp( key, "object_position" ) == 0 ){
-                  chart_options->object_position = value;
+                  chart_options->object_position = (uint8_t) value;
                }
 	    }
             else if( HB_IS_STRING( pValue ) )
@@ -168,7 +168,8 @@ lxw_image_options *image_options( PHB_ITEM pHash )
             {
                if( HB_IS_NUMERIC( pValue ) || HB_IS_DOUBLE( pValue ) )
 	       {
-                  double value = hb_itemGetND( pValue );
+                  //double value = hb_itemGetND( pValue );
+                  int32_t value = (int32_t) hb_itemGetND( pValue );
                   if( hb_stricmp( key, "x_scale" ) == 0 ){
                      image_data->x_scale = value;
                   }
@@ -176,7 +177,7 @@ lxw_image_options *image_options( PHB_ITEM pHash )
                      image_data->y_scale = value;
                   }
                   else if( hb_stricmp( key, "decorative" ) == 0 ){
-                     image_data->decorative = value;
+                     image_data->decorative = (uint8_t) value;
                   //else if( hb_stricmp( key, "width" ) == 0 ){
                   //   image_data->width = value;
                   //}
@@ -267,7 +268,7 @@ lxw_object_properties *object_properties( PHB_ITEM pHash )
             {
                if( HB_IS_NUMERIC( pValue ) || HB_IS_DOUBLE( pValue ) )
 	       {
-                  double value = hb_itemGetND( pValue );
+                  uint8_t value = (uint8_t) hb_itemGetND( pValue );
                   if( hb_stricmp( key, "x_scale" ) == 0 ){
                      object_props->x_scale = value;
                   }
@@ -298,7 +299,7 @@ lxw_object_properties *object_properties( PHB_ITEM pHash )
                }
 	       else if( HB_IS_NUMINT( pValue ) )
                {
-                  HB_MAXINT value = hb_itemGetNInt( pValue );
+                  uint8_t value = (uint8_t) hb_itemGetNInt( pValue );
                   if( hb_stricmp( key, "object_position" ) == 0 ){
                      object_props->object_position = value;
                   }
@@ -391,7 +392,7 @@ HB_FUNC( LXW_WORKSHEET_FIND_ROW )
 HB_FUNC( LXW_WORKSHEET_FIND_CELL_IN_ROW )
 { 
    lxw_row *row = hb_parptr(1 ) ;
-   lxw_col_t col_num = hb_parni( 2 ) ;
+   lxw_col_t col_num = (lxw_col_t) hb_parni( 2 ) ;
 
    hb_retptr( lxw_worksheet_find_cell_in_row( row, col_num ) ); 
 }
@@ -401,7 +402,7 @@ HB_FUNC( LXW_WORKSHEET_FIND_CELL_IN_ROW )
 HB_FUNC( LXW_WORKSHEET_FIND_CELL )
 {
    lxw_row *row = hb_parptr( 1 );
-   lxw_col_t col_num = hb_parni( 2 );
+   lxw_col_t col_num = (lxw_col_t) hb_parni( 2 );
    hb_retptr( lxw_worksheet_find_cell( row, col_num ) );
 }
 */
@@ -529,8 +530,8 @@ HB_FUNC( _VALIDATION_LIST_TO_CSV )
 HB_FUNC( LXW_WORKSHEET_PREPARE_IMAGE )
 { 
    lxw_worksheet *self = hb_parptr( 1 ) ;
-   uint16_t image_ref_id = hb_parnl( 2 ) ;
-   uint16_t drawing_id = hb_parnl( 3 ) ;
+   uint16_t image_ref_id = (uint16_t) hb_parnl( 2 ) ;
+   uint16_t drawing_id   = (uint16_t) hb_parnl( 3 ) ;
 
    PHB_ITEM pHash = hb_param( 4, HB_IT_HASH );
 
@@ -555,11 +556,11 @@ HB_FUNC( LXW_WORKSHEET_PREPARE_IMAGE )
 HB_FUNC( LXW_WORKSHEET_PREPARE_CHART )
 { 
    lxw_worksheet *self = hb_parptr( 1 ) ;
-   uint16_t chart_ref_id = hb_parnl( 2 ) ;
-   uint16_t drawing_id = hb_parnl( 3 ) ;
+   uint16_t chart_ref_id = (uint16_t) hb_parnl( 2 ) ;
+   uint16_t drawing_id   = (uint16_t) hb_parnl( 3 ) ;
 //   lxw_image_options *image_data = hb_parptr(4 ) ;
    PHB_ITEM pHash = hb_param( 4, HB_IT_HASH );
-   uint8_t is_chartsheet = hb_parni( 5 ) ;
+   uint8_t is_chartsheet = (uint8_t) hb_parni( 5 ) ;
 
    lxw_object_properties *object_props = object_properties( pHash );
 
@@ -646,8 +647,8 @@ HB_FUNC( LXW_WORKSHEET_ASSEMBLE_XML_FILE )
 HB_FUNC( WORKSHEET_WRITE_NUMBER )
 { 
    lxw_worksheet *self = hb_parptr( 1 ) ;
-   lxw_row_t row_num = hb_parni( 2 ) ;
-   lxw_col_t col_num = hb_parni( 3 ) ;
+   lxw_row_t row_num = (lxw_row_t) hb_parni( 2 ) ;
+   lxw_col_t col_num = (lxw_col_t) hb_parni( 3 ) ;
    double value = hb_parnd(4 ) ;
    lxw_format *format = hb_parptr(5 ) ;
 
@@ -669,8 +670,8 @@ HB_FUNC( WORKSHEET_WRITE_NUMBER )
 HB_FUNC( WORKSHEET_WRITE_STRING )
 { 
    lxw_worksheet *self = hb_parptr( 1 ) ;
-   lxw_row_t row_num   = hb_parni( 2 ) ;
-   lxw_col_t col_num   = hb_parni( 3 ) ;
+   lxw_row_t row_num   = (lxw_row_t) hb_parni( 2 ) ;
+   lxw_col_t col_num   = (lxw_col_t) hb_parni( 3 ) ;
    const char *string  = hb_parcx( 4 ) ;
    lxw_format *format  = hb_parptr(5 ) ;
 
@@ -693,8 +694,8 @@ HB_FUNC( WORKSHEET_WRITE_STRING )
 HB_FUNC( WORKSHEET_WRITE_FORMULA_NUM )
 { 
    lxw_worksheet *self = hb_parptr( 1 ) ;
-   lxw_row_t row_num = hb_parni( 2 ) ;
-   lxw_col_t col_num = hb_parni( 3 ) ;
+   lxw_row_t row_num = (lxw_row_t) hb_parni( 2 ) ;
+   lxw_col_t col_num = (lxw_col_t) hb_parni( 3 ) ;
    const char *formula = hb_parcx( 4 ) ;
    lxw_format *format = hb_parptr(5 ) ;
    double result = hb_parnd(6 ) ;
@@ -717,8 +718,8 @@ HB_FUNC( WORKSHEET_WRITE_FORMULA_NUM )
 HB_FUNC( WORKSHEET_WRITE_FORMULA )
 { 
    lxw_worksheet *self = hb_parptr( 1 ) ;
-   lxw_row_t row_num = hb_parni( 2 ) ;
-   lxw_col_t col_num = hb_parni( 3 ) ;
+   lxw_row_t row_num = (lxw_row_t) hb_parni( 2 ) ;
+   lxw_col_t col_num = (lxw_col_t) hb_parni( 3 ) ;
    const char *formula = hb_parcx( 4 ) ;
    lxw_format *format = hb_parptr( 5 ) ;
 
@@ -744,11 +745,11 @@ HB_FUNC( WORKSHEET_WRITE_ARRAY_FORMULA_NUM )
 { 
    lxw_worksheet *self = hb_parptr( 1 ) ;
    lxw_row_t first_row = hb_parni( 2 ) ;
-   lxw_col_t first_col = hb_parni( 3 ) ;
-   lxw_row_t last_row = hb_parni( 4 ) ;
-   lxw_col_t last_col = hb_parni( 5 ) ;
+   lxw_col_t first_col = (lxw_col_t) hb_parni( 3 ) ;
+   lxw_row_t last_row  = (lxw_row_t) hb_parni( 4 ) ;
+   lxw_col_t last_col  = (lxw_col_t) hb_parni( 5 ) ;
    const char *formula = hb_parcx( 6 ) ;
-   lxw_format *format = hb_parptr(7 ) ;
+   lxw_format *format  = hb_parptr(7 ) ;
    double result = hb_parnd(8 ) ;
 
    hb_retni( worksheet_write_array_formula_num( self, first_row, first_col, last_row, last_col, formula, format, result ) ); 
@@ -769,10 +770,10 @@ HB_FUNC( WORKSHEET_WRITE_ARRAY_FORMULA_NUM )
 HB_FUNC( WORKSHEET_WRITE_ARRAY_FORMULA )
 { 
    lxw_worksheet *self = hb_parptr( 1 ) ;
-   lxw_row_t first_row = hb_parni( 2 ) ;
-   lxw_col_t first_col = hb_parni( 3 ) ;
-   lxw_row_t last_row = hb_parni( 4 ) ;
-   lxw_col_t last_col = hb_parni( 5 ) ;
+   lxw_row_t first_row = (lxw_row_t) hb_parni( 2 ) ;
+   lxw_col_t first_col = (lxw_col_t) hb_parni( 3 ) ;
+   lxw_row_t last_row  = (lxw_row_t) hb_parni( 4 ) ;
+   lxw_col_t last_col  = (lxw_col_t) hb_parni( 5 ) ;
    const char *formula = hb_parcx( 6 ) ;
    lxw_format *format = hb_parptr(7 ) ;
 
@@ -793,8 +794,8 @@ HB_FUNC( WORKSHEET_WRITE_ARRAY_FORMULA )
 HB_FUNC( WORKSHEET_WRITE_BLANK )
 { 
    lxw_worksheet *self = hb_parptr( 1 ) ;
-   lxw_row_t row_num = hb_parni( 2 ) ;
-   lxw_col_t col_num = hb_parni( 3 ) ;
+   lxw_row_t row_num = (lxw_row_t) hb_parni( 2 ) ;
+   lxw_col_t col_num = (lxw_col_t) hb_parni( 3 ) ;
    lxw_format *format = hb_parptr(4 ) ;
 
    hb_retni( worksheet_write_blank( self, row_num, col_num, format ) ); 
@@ -813,8 +814,8 @@ HB_FUNC( WORKSHEET_WRITE_BLANK )
 HB_FUNC( WORKSHEET_WRITE_BOOLEAN )
 { 
    lxw_worksheet *self = hb_parptr( 1 ) ;
-   lxw_row_t row_num = hb_parni( 2 ) ;
-   lxw_col_t col_num = hb_parni( 3 ) ;
+   lxw_row_t row_num = (lxw_row_t) hb_parni( 2 ) ;
+   lxw_col_t col_num = (lxw_col_t) hb_parni( 3 ) ;
    int value = hb_parni( 4 ) ;
    lxw_format *format = hb_parptr(5 ) ;
 
@@ -838,8 +839,8 @@ HB_FUNC( WORKSHEET_WRITE_BOOLEAN )
 HB_FUNC( WORKSHEET_WRITE_DATETIME )
 { 
    lxw_worksheet *self = hb_parptr( 1 ) ;
-   lxw_row_t row_num = hb_parni( 2 ) ;
-   lxw_col_t col_num = hb_parni( 3 ) ;
+   lxw_row_t row_num = (lxw_row_t) hb_parni( 2 ) ;
+   lxw_col_t col_num = (lxw_col_t) hb_parni( 3 ) ;
    lxw_datetime datetime; 
 
    long lDate, lTime;
@@ -881,8 +882,8 @@ HB_FUNC( WORKSHEET_WRITE_DATETIME )
 HB_FUNC( WORKSHEET_WRITE_URL_OPT )
 { 
    lxw_worksheet *self = hb_parptr( 1 ) ;
-   lxw_row_t row_num = hb_parni( 2 ) ;
-   lxw_col_t col_num = hb_parni( 3 ) ;
+   lxw_row_t row_num = (lxw_row_t) hb_parni( 2 ) ;
+   lxw_col_t col_num = (lxw_col_t) hb_parni( 3 ) ;
    const char *url = hb_parcx( 4 ) ;
    lxw_format *format = hb_parptr(5 ) ;
    const char *string = hb_parcx( 6 ) ;
@@ -905,8 +906,8 @@ HB_FUNC( WORKSHEET_WRITE_URL_OPT )
 HB_FUNC( WORKSHEET_WRITE_URL )
 { 
    lxw_worksheet *self = hb_parptr( 1 ) ;
-   lxw_row_t row_num = hb_parni( 2 ) ;
-   lxw_col_t col_num = hb_parni( 3 ) ;
+   lxw_row_t row_num = (lxw_row_t) hb_parni( 2 ) ;
+   lxw_col_t col_num = (lxw_col_t) hb_parni( 3 ) ;
    const char *url = hb_parcx( 4 ) ;
    lxw_format *format = hb_parptr(5 ) ;
 
@@ -934,8 +935,8 @@ HB_FUNC( WORKSHEET_WRITE_URL )
 HB_FUNC( WORKSHEET_WRITE_RICH_STRING )
 {
    lxw_worksheet *self = hb_parptr( 1 ) ;
-   lxw_row_t row_num   = hb_parni( 2 ) ;
-   lxw_col_t col_num   = hb_parni( 3 ) ;
+   lxw_row_t row_num   = (lxw_row_t) hb_parni( 2 ) ;
+   lxw_col_t col_num   = (lxw_col_t) hb_parni( 3 ) ;
    PHB_ITEM pArray     = hb_param( 4, HB_IT_ARRAY );
    lxw_format *format  = hb_parptr( 5 );
 
@@ -1027,8 +1028,8 @@ HB_FUNC( WORKSHEET_WRITE_RICH_STRING )
 HB_FUNC( WORKSHEET_SET_COLUMN_OPT )
 { 
    lxw_worksheet *self = hb_parptr( 1 ) ;
-   lxw_col_t firstcol = hb_parni( 2 ) ;
-   lxw_col_t lastcol = hb_parni( 3 ) ;
+   lxw_col_t firstcol = (lxw_col_t) hb_parni( 2 ) ;
+   lxw_col_t lastcol = (lxw_col_t) hb_parni( 3 ) ;
    double width = hb_parnd( 4 ) ;
    lxw_format *format = hb_parptr(5 ) ;
    lxw_row_col_options *user_options = hb_parptr(6 ) ;
@@ -1051,8 +1052,8 @@ HB_FUNC( WORKSHEET_SET_COLUMN_OPT )
 HB_FUNC( WORKSHEET_SET_COLUMN )
 { 
    lxw_worksheet *self = hb_parptr( 1 ) ;
-   lxw_col_t firstcol = hb_parni( 2 ) ;
-   lxw_col_t lastcol = hb_parni( 3 ) ;
+   lxw_col_t firstcol = (lxw_col_t) hb_parni( 2 ) ;
+   lxw_col_t lastcol = (lxw_col_t) hb_parni( 3 ) ;
    double width = hb_parnd( 4 ) ;
    lxw_format *format = hb_parptr(5 ) ;
 
@@ -1119,10 +1120,10 @@ HB_FUNC( WORKSHEET_SET_ROW )
 HB_FUNC( WORKSHEET_MERGE_RANGE )
 { 
    lxw_worksheet *self = hb_parptr( 1 ) ;
-   lxw_row_t first_row = hb_parni( 2 ) ;
-   lxw_col_t first_col = hb_parni( 3 ) ;
-   lxw_row_t last_row = hb_parni( 4 ) ;
-   lxw_col_t last_col = hb_parni( 5 ) ;
+   lxw_row_t first_row = (lxw_row_t) hb_parni( 2 ) ;
+   lxw_col_t first_col = (lxw_col_t) hb_parni( 3 ) ;
+   lxw_row_t last_row = (lxw_row_t) hb_parni( 4 ) ;
+   lxw_col_t last_col = (lxw_col_t) hb_parni( 5 ) ;
    const char *string = hb_parcx( 6 ) ;
    lxw_format *format = hb_parptr(7 ) ;
 
@@ -1143,10 +1144,10 @@ HB_FUNC( WORKSHEET_MERGE_RANGE )
 HB_FUNC( WORKSHEET_AUTOFILTER )
 { 
    lxw_worksheet *self = hb_parptr( 1 ) ;
-   lxw_row_t first_row = hb_parni( 2 ) ;
-   lxw_col_t first_col = hb_parni( 3 ) ;
-   lxw_row_t last_row  = hb_parni( 4 ) ;
-   lxw_col_t last_col  = hb_parni( 5 ) ;
+   lxw_row_t first_row = (lxw_row_t) hb_parni( 2 ) ;
+   lxw_col_t first_col = (lxw_col_t) hb_parni( 3 ) ;
+   lxw_row_t last_row  = (lxw_row_t) hb_parni( 4 ) ;
+   lxw_col_t last_col  = (lxw_col_t) hb_parni( 5 ) ;
 
    hb_retni( worksheet_autofilter( self, first_row, first_col, last_row, last_col ) ); 
 }
@@ -1238,10 +1239,10 @@ HB_FUNC( WORKSHEET_HIDE )
 HB_FUNC( WORKSHEET_SET_SELECTION )
 { 
    lxw_worksheet *self = hb_parptr( 1 ) ;
-   lxw_row_t first_row = hb_parni( 2 ) ;
-   lxw_col_t first_col = hb_parni( 3 ) ;
-   lxw_row_t last_row = hb_parni( 4 ) ;
-   lxw_col_t last_col = hb_parni( 5 ) ;
+   lxw_row_t first_row = (lxw_row_t) hb_parni( 2 ) ;
+   lxw_col_t first_col = (lxw_col_t) hb_parni( 3 ) ;
+   lxw_row_t last_row = (lxw_row_t) hb_parni( 4 ) ;
+   lxw_col_t last_col = (lxw_col_t) hb_parni( 5 ) ;
 
    worksheet_set_selection( self, first_row, first_col, last_row, last_col); 
 }
@@ -1262,11 +1263,11 @@ HB_FUNC( WORKSHEET_SET_SELECTION )
 HB_FUNC( WORKSHEET_FREEZE_PANES_OPT )
 { 
    lxw_worksheet *self = hb_parptr( 1 ) ;
-   lxw_row_t first_row = hb_parni( 2 ) ;
-   lxw_col_t first_col = hb_parni( 3 ) ;
-   lxw_row_t top_row = hb_parni( 4 ) ;
-   lxw_col_t left_col = hb_parni( 5 ) ;
-   uint8_t type = hb_parni( 6 ) ;
+   lxw_row_t first_row = (lxw_row_t) hb_parni( 2 ) ;
+   lxw_col_t first_col = (lxw_col_t) hb_parni( 3 ) ;
+   lxw_row_t top_row   = (lxw_row_t) hb_parni( 4 ) ;
+   lxw_col_t left_col  = (lxw_col_t) hb_parni( 5 ) ;
+   uint8_t type = (uint8_t) hb_parni( 6 ) ;
 
    worksheet_freeze_panes_opt( self, first_row, first_col, top_row, left_col, type); 
 }
@@ -1285,8 +1286,8 @@ HB_FUNC( WORKSHEET_FREEZE_PANES_OPT )
 HB_FUNC( WORKSHEET_FREEZE_PANES )
 { 
    lxw_worksheet *self = hb_parptr( 1 ) ;
-   lxw_row_t first_row = hb_parni( 2 ) ;
-   lxw_col_t first_col = hb_parni( 3 ) ;
+   lxw_row_t first_row = (lxw_row_t) hb_parni( 2 ) ;
+   lxw_col_t first_col = (lxw_col_t) hb_parni( 3 ) ;
 
    worksheet_freeze_panes( self, first_row, first_col); 
 }
@@ -1308,8 +1309,8 @@ HB_FUNC( WORKSHEET_SPLIT_PANES_OPT )
    lxw_worksheet *self = hb_parptr( 1 ) ;
    double y_split = hb_parnd( 2 ) ;
    double x_split = hb_parnd( 3 ) ;
-   lxw_row_t top_row = hb_parni( 4 ) ;
-   lxw_col_t left_col = hb_parni( 5 ) ;
+   lxw_row_t top_row = (lxw_row_t) hb_parni( 4 ) ;
+   lxw_col_t left_col = (lxw_col_t) hb_parni( 5 ) ;
 
    worksheet_split_panes_opt( self, y_split, x_split, top_row, left_col); 
 }
@@ -1397,7 +1398,7 @@ HB_FUNC( WORKSHEET_SET_PAGE_VIEW )
 HB_FUNC( WORKSHEET_SET_PAPER )
 { 
    lxw_worksheet *self = hb_parptr( 1 ) ;
-   uint8_t paper_size = hb_parni( 2 ) ;
+   uint8_t paper_size = (uint8_t) hb_parni( 2 ) ;
 
    worksheet_set_paper( self, paper_size); 
 }
@@ -1534,7 +1535,7 @@ HB_FUNC( WORKSHEET_SET_FOOTER )
 HB_FUNC( WORKSHEET_GRIDLINES )
 { 
    lxw_worksheet *self = hb_parptr( 1 ) ;
-   uint8_t option = hb_parni( 2 ) ;
+   uint8_t option = (uint8_t) hb_parni( 2 ) ;
 
    worksheet_gridlines( self, option ); 
 }
@@ -1624,8 +1625,8 @@ HB_FUNC( WORKSHEET_REPEAT_ROWS )
 HB_FUNC( WORKSHEET_REPEAT_COLUMNS )
 { 
    lxw_worksheet *self = hb_parptr( 1 ) ;
-   lxw_col_t first_col = hb_parni( 2 ) ;
-   lxw_col_t last_col = hb_parni( 3 ) ;
+   lxw_col_t first_col = (lxw_col_t) hb_parni( 2 ) ;
+   lxw_col_t last_col = (lxw_col_t) hb_parni( 3 ) ;
 
    hb_retni( worksheet_repeat_columns( self, first_col, last_col) ); 
 }
@@ -1645,10 +1646,10 @@ HB_FUNC( WORKSHEET_REPEAT_COLUMNS )
 HB_FUNC( WORKSHEET_PRINT_AREA )
 { 
    lxw_worksheet *self = hb_parptr( 1 ) ;
-   lxw_row_t first_row = hb_parni( 2 ) ;
-   lxw_col_t first_col = hb_parni( 3 ) ;
-   lxw_row_t last_row = hb_parni( 4 ) ;
-   lxw_col_t last_col = hb_parni( 5 ) ;
+   lxw_row_t first_row = (lxw_row_t) hb_parni( 2 ) ;
+   lxw_col_t first_col = (lxw_col_t) hb_parni( 3 ) ;
+   lxw_row_t last_row  = (lxw_row_t) hb_parni( 4 ) ;
+   lxw_col_t last_col  = (lxw_col_t) hb_parni( 5 ) ;
 
    hb_retni( worksheet_print_area( self, first_row, first_col, last_row, last_col) ); 
 }
@@ -1666,8 +1667,8 @@ HB_FUNC( WORKSHEET_PRINT_AREA )
 HB_FUNC( WORKSHEET_FIT_TO_PAGES )
 { 
    lxw_worksheet *self = hb_parptr( 1 ) ;
-   uint16_t width = hb_parnl( 2 ) ;
-   uint16_t height = hb_parnl( 3 ) ;
+   uint16_t width  = (uint16_t) hb_parnl( 2 ) ;
+   uint16_t height = (uint16_t) hb_parnl( 3 ) ;
 
    worksheet_fit_to_pages( self, width, height ); 
 }
@@ -1685,7 +1686,7 @@ HB_FUNC( WORKSHEET_FIT_TO_PAGES )
 HB_FUNC( WORKSHEET_SET_START_PAGE )
 { 
    lxw_worksheet *self = hb_parptr( 1 ) ;
-   uint16_t start_page = hb_parnl( 2 ) ;
+   uint16_t start_page = (uint16_t) hb_parnl( 2 ) ;
 
    worksheet_set_start_page( self, start_page ); 
 }
@@ -1703,7 +1704,7 @@ HB_FUNC( WORKSHEET_SET_START_PAGE )
 HB_FUNC( WORKSHEET_SET_PRINT_SCALE )
 { 
    lxw_worksheet *self = hb_parptr( 1 ) ;
-   uint16_t scale = hb_parnl( 2 ) ;
+   uint16_t scale = (uint16_t) hb_parnl( 2 ) ;
 
    worksheet_set_print_scale( self, scale ); 
 }
@@ -1742,7 +1743,7 @@ HB_FUNC( WORKSHEET_SET_H_PAGEBREAKS )
 HB_FUNC( WORKSHEET_SET_V_PAGEBREAKS )
 { 
    lxw_worksheet *self = hb_parptr( 1 ) ;
-   lxw_col_t vbreaks[] = hb_parni( 2 ) ;
+   lxw_col_t vbreaks[] = (lxw_col_t) hb_parni( 2 ) ;
 
    hb_retni( worksheet_set_v_pagebreaks( self, vbreaks[] ) ); 
 }
@@ -1760,7 +1761,7 @@ HB_FUNC( WORKSHEET_SET_V_PAGEBREAKS )
 HB_FUNC( WORKSHEET_SET_ZOOM )
 { 
    lxw_worksheet *self = hb_parptr( 1 ) ;
-   uint16_t scale = hb_parnl( 2 ) ;
+   uint16_t scale = (uint16_t) hb_parnl( 2 ) ;
 
    worksheet_set_zoom( self, scale ); 
 }
@@ -1853,10 +1854,10 @@ HB_FUNC( WORKSHEET_PROTECT )
 HB_FUNC( WORKSHEET_OUTLINE_SETTINGS )
 { 
    lxw_worksheet *self = hb_parptr( 1 ) ;
-   uint8_t visible = hb_parni( 2 ) ;
-   uint8_t symbols_below = hb_parni( 3 ) ;
-   uint8_t symbols_right = hb_parni( 4 ) ;
-   uint8_t auto_style = hb_parni( 5 ) ;
+   uint8_t visible = (uint8_t) hb_parni( 2 ) ;
+   uint8_t symbols_below = (uint8_t) hb_parni( 3 ) ;
+   uint8_t symbols_right = (uint8_t) hb_parni( 4 ) ;
+   uint8_t auto_style = (uint8_t) hb_parni( 5 ) ;
 
    worksheet_outline_settings( self, visible, symbols_below, symbols_right, auto_style ); 
 }
@@ -1875,7 +1876,7 @@ HB_FUNC( WORKSHEET_SET_DEFAULT_ROW )
 { 
    lxw_worksheet *self = hb_parptr( 1 ) ;
    double height = hb_parnd( 2 ) ;
-   uint8_t hide_unused_rows = hb_parni( 3 ) ;
+   uint8_t hide_unused_rows = (uint8_t) hb_parni( 3 ) ;
 
    worksheet_set_default_row( self, height, hide_unused_rows ); 
 }
@@ -1895,8 +1896,8 @@ HB_FUNC( WORKSHEET_SET_DEFAULT_ROW )
 HB_FUNC( WORKSHEET_INSERT_IMAGE_OPT )
 { 
    lxw_worksheet *self = hb_parptr( 1 ) ;
-   lxw_row_t row_num = hb_parni( 2 ) ;
-   lxw_col_t col_num = hb_parni( 3 ) ;
+   lxw_row_t row_num = (lxw_row_t) hb_parni( 2 ) ;
+   lxw_col_t col_num = (lxw_col_t) hb_parni( 3 ) ;
    const char *filename = hb_parcx( 4 ) ;
    PHB_ITEM pHash = hb_param( 5, HB_IT_HASH );
 
@@ -2019,8 +2020,8 @@ HB_FUNC( WORKSHEET_INSERT_IMAGE_OPT )
 HB_FUNC( WORKSHEET_INSERT_IMAGE )
 { 
    lxw_worksheet *self = hb_parptr( 1 ) ;
-   lxw_row_t row_num = hb_parni( 2 ) ;
-   lxw_col_t col_num = hb_parni( 3 ) ;
+   lxw_row_t row_num = (lxw_row_t) hb_parni( 2 ) ;
+   lxw_col_t col_num = (lxw_col_t) hb_parni( 3 ) ;
    const char *filename = hb_parcx( 4 ) ;
 
    hb_retni( worksheet_insert_image( self, row_num, col_num, filename ) ); 
@@ -2040,8 +2041,8 @@ worksheet_insert_image_buffer(lxw_worksheet *self,
 HB_FUNC( WORKSHEET_INSERT_IMAGE_BUFFER )
 { 
    lxw_worksheet *self = hb_parptr( 1 );
-   lxw_row_t row_num   = hb_parni( 2 );
-   lxw_col_t col_num   = hb_parni( 3 );
+   lxw_row_t row_num   = (lxw_row_t) hb_parni( 2 );
+   lxw_col_t col_num   = (lxw_col_t) hb_parni( 3 );
    const unsigned char *image_buffer = hb_parcx( 4 );
    size_t image_size   = hb_parni( 4 );
 
@@ -2063,8 +2064,8 @@ HB_FUNC( WORKSHEET_INSERT_IMAGE_BUFFER )
 HB_FUNC( WORKSHEET_INSERT_CHART_OPT )
 { 
    lxw_worksheet *self = hb_parptr( 1 ) ;
-   lxw_row_t row_num = hb_parni( 2 ) ;
-   lxw_col_t col_num = hb_parni( 3 ) ;
+   lxw_row_t row_num = (lxw_row_t) hb_parni( 2 ) ;
+   lxw_col_t col_num = (lxw_col_t) hb_parni( 3 ) ;
    lxw_chart *chart = hb_parptr( 4 ) ;
 //   lxw_image_options *user_options = hb_parptr( 5 ) ;
    PHB_ITEM pHash = hb_param( 5, HB_IT_HASH );
@@ -2093,8 +2094,8 @@ HB_FUNC( WORKSHEET_INSERT_CHART_OPT )
 HB_FUNC( WORKSHEET_INSERT_CHART )
 { 
    lxw_worksheet *self = hb_parptr( 1 ) ;
-   lxw_row_t row_num = hb_parni( 2 ) ;
-   lxw_col_t col_num = hb_parni( 3 ) ;
+   lxw_row_t row_num = (lxw_row_t) hb_parni( 2 ) ;
+   lxw_col_t col_num = (lxw_col_t) hb_parni( 3 ) ;
    lxw_chart *chart = hb_parptr(4 ) ;
 
    hb_retni( worksheet_insert_chart( self, row_num, col_num, chart) ); 
@@ -2117,10 +2118,10 @@ HB_FUNC( WORKSHEET_INSERT_CHART )
 HB_FUNC( WORKSHEET_DATA_VALIDATION_RANGE )
 { 
    lxw_worksheet *self = hb_parptr( 1 ) ;
-   lxw_row_t first_row = hb_parni( 2 ) ;
-   lxw_col_t first_col = hb_parni( 3 ) ;
-   lxw_row_t last_row = hb_parni( 4 ) ;
-   lxw_col_t last_col = hb_parni( 5 ) ;
+   lxw_row_t first_row = (lxw_row_t) hb_parni( 2 ) ;
+   lxw_col_t first_col = (lxw_col_t) hb_parni( 3 ) ;
+   lxw_row_t last_row  = (lxw_row_t) hb_parni( 4 ) ;
+   lxw_col_t last_col  = (lxw_col_t) hb_parni( 5 ) ;
    lxw_data_validation *validation = hb_parptr(6 ) ;
 
    hb_retni( worksheet_data_validation_range( self, first_row, first_col, last_row, last_col, validation ) ); 
@@ -2139,8 +2140,8 @@ HB_FUNC( WORKSHEET_DATA_VALIDATION_RANGE )
 HB_FUNC( WORKSHEET_DATA_VALIDATION_CELL )
 {
    lxw_worksheet *self = hb_parptr( 1 );
-   lxw_row_t row = hb_parni( 2 );
-   lxw_col_t col = hb_parni( 3 );
+   lxw_row_t row = (lxw_row_t) hb_parni( 2 );
+   lxw_col_t col = (lxw_col_t) hb_parni( 3 );
    lxw_data_validation *validation = hb_parptr( 4 );
 
    hb_retni( worksheet_data_validation_range(self, row, col,
@@ -2150,8 +2151,8 @@ HB_FUNC( WORKSHEET_DATA_VALIDATION_CELL )
 HB_FUNC( WORKSHEET_DATA_VALIDATION_CELL )
 {
    lxw_worksheet *self = hb_parptr( 1 );
-   lxw_row_t row = hb_parni( 2 );
-   lxw_col_t col = hb_parni( 3 );
+   lxw_row_t row = (lxw_row_t) hb_parni( 2 );
+   lxw_col_t col = (lxw_col_t) hb_parni( 3 );
    PHB_ITEM pHash = hb_param( 4, HB_IT_HASH );
 
    lxw_data_validation *validation = (lxw_data_validation *) hb_xalloc( sizeof(lxw_data_validation) ); 
@@ -2171,12 +2172,12 @@ HB_FUNC( WORKSHEET_DATA_VALIDATION_CELL )
          PHB_ITEM pValue = hb_hashGetValueAt( pHash, nPos );
          if( pKey && pValue )
          {
-            char *key = (char *)hb_itemGetC( pKey );
+            char *key = (char *) hb_itemGetC( pKey );
             if( HB_IS_NUMERIC( pValue ) )
             {
                if( HB_IS_NUMINT( pValue ) )
 	       {
-                  HB_MAXINT value = hb_itemGetNInt( pValue );
+                  uint8_t value = (uint8_t) hb_itemGetNInt( pValue );
                   if( hb_stricmp( key, "validate" ) == 0 ){
                      validation->validate = value;
                   }
@@ -2286,10 +2287,10 @@ HB_FUNC( WORKSHEET_DATA_VALIDATION_CELL )
             }
             else if( HB_IS_ARRAY( pValue ) )
             {
-               HB_SIZE nLen = hb_itemSize( pValue );
+               nLen = hb_itemSize( pValue );
                if( nLen )
                {
-                  validation->value_list = (char **) hb_xalloc( sizeof( char* ) * (nLen+1) );
+                  validation->value_list = (const char **) hb_xalloc( sizeof( char* ) * (nLen+1) );
                   if( validation->value_list == NULL )
                   {
                      hb_errRT_BASE( EG_MEM, 0, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
@@ -2368,3 +2369,4 @@ HB_FUNC( WORKSHEET_DATA_VALIDATION_CELL )
  */
 
 //eof
+

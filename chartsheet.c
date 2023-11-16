@@ -259,7 +259,7 @@ chartsheet_set_zoom(lxw_chartsheet *self, uint16_t scale)
 HB_FUNC( CHARTSHEET_SET_ZOOM )
 { 
    lxw_chartsheet *self = hb_parptr( 1 ) ;
-   uint16_t scale = hb_parnl( 2 ) ;
+   uint16_t scale = (uint16_t) hb_parnl( 2 ) ;
 
    chartsheet_set_zoom(self, scale) ; 
 }
@@ -314,7 +314,7 @@ chartsheet_set_paper(lxw_chartsheet *self, uint8_t paper_size)
 HB_FUNC( CHARTSHEET_SET_PAPER )
 { 
    lxw_chartsheet *self = hb_parptr( 1 ) ;
-   uint8_t paper_size = hb_parni( 2 ) ;
+   uint8_t paper_size = (uint8_t) hb_parni( 2 ) ;
 
    chartsheet_set_paper(self, paper_size) ; 
 }
@@ -405,3 +405,4 @@ HB_FUNC( CHARTSHEET_SET_HEADER )
 
 
 //eof
+

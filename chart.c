@@ -52,7 +52,7 @@ lxw_chart_new(uint8_t type)
 */
 HB_FUNC( LXW_CHART_NEW )
 { 
-   uint8_t type = hb_parni( 1 ) ;
+   uint8_t type = (uint8_t) hb_parni( 1 ) ;
 
    hb_retptr( lxw_chart_new(type) ); 
 }
@@ -144,10 +144,10 @@ lxw_chart_add_data_cache(lxw_series_range *range, uint8_t *data,
 HB_FUNC( LXW_CHART_ADD_DATA_CACHE )
 { 
    lxw_series_range *range = hb_parptr( 1 ) ;
-   uint8_t *data = hb_parptr( 2 ) ;
-   uint16_t rows = hb_parnl( 3 ) ;
-   uint8_t cols = hb_parni( 4 ) ;
-   uint8_t col = hb_parni( 5 ) ;
+   uint8_t *data = (uint8_t*)  hb_parptr( 2 ) ;
+   uint16_t rows = (uint16_t) hb_parnl( 3 ) ;
+   uint8_t cols  = (uint8_t)  hb_parni( 4 ) ;
+   uint8_t col   = (uint8_t)  hb_parni( 5 ) ;
 
    hb_retni( lxw_chart_add_data_cache(range, data, rows, cols, col) ); 
 }
@@ -186,7 +186,7 @@ chart_set_style(lxw_chart *self, uint8_t style_id)
 HB_FUNC( CHART_SET_STYLE )
 { 
    lxw_chart *self = hb_parptr( 1 ) ;
-   uint8_t style_id = hb_parni( 2 ) ;
+   uint8_t style_id = (uint8_t) hb_parni( 2 ) ;
 
    chart_set_style(self, style_id) ; 
 }
@@ -226,8 +226,8 @@ HB_FUNC( CHART_SERIES_SET_NAME_RANGE )
 { 
    lxw_chart_series *series = hb_parptr( 1 ) ;
    const char *sheetname = hb_parcx( 2 ) ;
-   lxw_row_t row = hb_parni( 3 ) ;
-   lxw_col_t col = hb_parni( 4 ) ;
+   lxw_row_t row = (lxw_row_t) hb_parni( 3 ) ;
+   lxw_col_t col = (lxw_col_t) hb_parni( 4 ) ;
 
    chart_series_set_name_range(series, sheetname, row, col) ; 
 }
@@ -249,10 +249,10 @@ HB_FUNC( CHART_SERIES_SET_CATEGORIES )
 { 
    lxw_chart_series *series = hb_parptr( 1 ) ;
    const char *sheetname = hb_parcx( 2 ) ;
-   lxw_row_t first_row = hb_parni( 3 ) ;
-   lxw_col_t first_col = hb_parni( 4 ) ;
-   lxw_row_t last_row = hb_parni( 5 ) ;
-   lxw_col_t last_col = hb_parni( 6 ) ;
+   lxw_row_t first_row = (lxw_row_t) hb_parni( 3 ) ;
+   lxw_col_t first_col = (lxw_col_t) hb_parni( 4 ) ;
+   lxw_row_t last_row  = (lxw_row_t) hb_parni( 5 ) ;
+   lxw_col_t last_col  = (lxw_col_t) hb_parni( 6 ) ;
 
    chart_series_set_categories(series, sheetname, first_row, first_col, last_row, last_col) ; 
 }
@@ -274,10 +274,10 @@ HB_FUNC( CHART_SERIES_SET_VALUES )
 { 
    lxw_chart_series *series = hb_parptr( 1 ) ;
    const char *sheetname = hb_parcx( 2 ) ;
-   lxw_row_t first_row = hb_parni( 3 ) ;
-   lxw_col_t first_col = hb_parni( 4 ) ;
-   lxw_row_t last_row = hb_parni( 5 ) ;
-   lxw_col_t last_col = hb_parni( 6 ) ;
+   lxw_row_t first_row = (lxw_row_t) hb_parni( 3 ) ;
+   lxw_col_t first_col = (lxw_col_t) hb_parni( 4 ) ;
+   lxw_row_t last_row  = (lxw_row_t) hb_parni( 5 ) ;
+   lxw_col_t last_col  = (lxw_col_t) hb_parni( 6 ) ;
 
    chart_series_set_values(series, sheetname, first_row, first_col, last_row, last_col) ; 
 }
@@ -371,7 +371,7 @@ chart_series_set_marker_type(lxw_chart_series *series, uint8_t type)
 HB_FUNC( CHART_SERIES_SET_MARKER_TYPE )
 { 
    lxw_chart_series *series = hb_parptr( 1 ) ;
-   uint8_t type = hb_parni( 2 ) ;
+   uint8_t type = (uint8_t) hb_parni( 2 ) ;
 
    chart_series_set_marker_type(series, type) ; 
 }
@@ -390,7 +390,7 @@ chart_series_set_marker_size(lxw_chart_series *series, uint8_t size)
 HB_FUNC( CHART_SERIES_SET_MARKER_SIZE )
 { 
    lxw_chart_series *series = hb_parptr( 1 ) ;
-   uint8_t size = hb_parni( 2 ) ;
+   uint8_t size = (uint8_t) hb_parni( 2 ) ;
 
    chart_series_set_marker_size(series, size) ; 
 }
@@ -487,7 +487,7 @@ chart_series_set_smooth(lxw_chart_series *series, uint8_t smooth)
 HB_FUNC( CHART_SERIES_SET_SMOOTH )
 { 
    lxw_chart_series *series = hb_parptr( 1 ) ;
-   uint8_t smooth = hb_parni( 2 ) ;
+   uint8_t smooth = (uint8_t) hb_parni( 2 ) ;
 
    chart_series_set_smooth(series, smooth) ; 
 }
@@ -525,9 +525,9 @@ chart_series_set_labels_options(lxw_chart_series *series, uint8_t show_name,
 HB_FUNC( CHART_SERIES_SET_LABELS_OPTIONS )
 { 
    lxw_chart_series *series = hb_parptr( 1 ) ;
-   uint8_t show_name = hb_parni( 2 ) ;
-   uint8_t show_category = hb_parni( 3 ) ;
-   uint8_t show_value = hb_parni( 4 ) ;
+   uint8_t show_name     = (uint8_t) hb_parni( 2 ) ;
+   uint8_t show_category = (uint8_t) hb_parni( 3 ) ;
+   uint8_t show_value    = (uint8_t) hb_parni( 4 ) ;
 
    chart_series_set_labels_options(series, show_name, show_category, show_value) ; 
 }
@@ -546,7 +546,7 @@ chart_series_set_labels_separator(lxw_chart_series *series, uint8_t separator)
 HB_FUNC( CHART_SERIES_SET_LABELS_SEPARATOR )
 { 
    lxw_chart_series *series = hb_parptr( 1 ) ;
-   uint8_t separator = hb_parni( 2 ) ;
+   uint8_t separator = (uint8_t) hb_parni( 2 ) ;
 
    chart_series_set_labels_separator(series, separator) ; 
 }
@@ -565,7 +565,7 @@ chart_series_set_labels_position(lxw_chart_series *series, uint8_t position)
 HB_FUNC( CHART_SERIES_SET_LABELS_POSITION )
 { 
    lxw_chart_series *series = hb_parptr( 1 ) ;
-   uint8_t position = hb_parni( 2 ) ;
+   uint8_t position = (uint8_t) hb_parni( 2 ) ;
 
    chart_series_set_labels_position(series, position) ; 
 }
@@ -678,8 +678,8 @@ chart_series_set_trendline(lxw_chart_series *series, uint8_t type,
 HB_FUNC( CHART_SERIES_SET_TRENDLINE )
 { 
    lxw_chart_series *series = hb_parptr( 1 ) ;
-   uint8_t type = hb_parni( 2 ) ;
-   uint8_t value = hb_parni( 3 ) ;
+   uint8_t type = (uint8_t) hb_parni( 2 ) ;
+   uint8_t value = (uint8_t) hb_parni( 3 ) ;
 
    chart_series_set_trendline(series, type, value) ; 
 }
@@ -836,7 +836,7 @@ chart_series_set_error_bars(lxw_series_error_bars *error_bars,
 HB_FUNC( CHART_SERIES_SET_ERROR_BARS )
 { 
    lxw_series_error_bars *error_bars = hb_parptr( 1 ) ;
-   uint8_t type = hb_parni( 2 ) ;
+   uint8_t type = (uint8_t) hb_parni( 2 ) ;
    double value = hb_parnd( 3 ) ;
 
    chart_series_set_error_bars(error_bars, type, value) ; 
@@ -857,7 +857,7 @@ chart_series_set_error_bars_direction(lxw_series_error_bars *error_bars,
 HB_FUNC( CHART_SERIES_SET_ERROR_BARS_DIRECTION )
 { 
    lxw_series_error_bars *error_bars = hb_parptr( 1 ) ;
-   uint8_t direction = hb_parni( 2 ) ;
+   uint8_t direction = (uint8_t) hb_parni( 2 ) ;
 
    chart_series_set_error_bars_direction(error_bars, direction) ; 
 }
@@ -877,7 +877,7 @@ chart_series_set_error_bars_endcap(lxw_series_error_bars *error_bars,
 HB_FUNC( CHART_SERIES_SET_ERROR_BARS_ENDCAP )
 { 
    lxw_series_error_bars *error_bars = hb_parptr( 1 ) ;
-   uint8_t endcap = hb_parni( 2 ) ;
+   uint8_t endcap = (uint8_t) hb_parni( 2 ) ;
 
    chart_series_set_error_bars_endcap(error_bars, endcap) ; 
 }
@@ -956,8 +956,8 @@ HB_FUNC( CHART_AXIS_SET_NAME_RANGE )
 { 
    lxw_chart_axis *axis = hb_parptr( 1 ) ;
    const char *sheetname = hb_parcx( 2 ) ;
-   lxw_row_t row = hb_parni( 3 ) ;
-   lxw_col_t col = hb_parni( 4 ) ;
+   lxw_row_t row = (lxw_row_t) hb_parni( 3 ) ;
+   lxw_col_t col = (lxw_col_t) hb_parni( 4 ) ;
 
    chart_axis_set_name_range(axis, sheetname, row, col) ; 
 }
@@ -1175,7 +1175,7 @@ chart_axis_set_position(lxw_chart_axis *axis, uint8_t position)
 HB_FUNC( CHART_AXIS_SET_POSITION )
 { 
    lxw_chart_axis *axis = hb_parptr( 1 ) ;
-   uint8_t position = hb_parni( 2 ) ;
+   uint8_t position = (uint8_t) hb_parni( 2 ) ;
 
    chart_axis_set_position(axis, position) ; 
 }
@@ -1194,7 +1194,7 @@ chart_axis_set_label_position(lxw_chart_axis *axis, uint8_t position)
 HB_FUNC( CHART_AXIS_SET_LABEL_POSITION )
 { 
    lxw_chart_axis *axis = hb_parptr( 1 ) ;
-   uint8_t position = hb_parni( 2 ) ;
+   uint8_t position = (uint8_t) hb_parni( 2 ) ;
 
    chart_axis_set_label_position(axis, position) ; 
 }
@@ -1251,7 +1251,7 @@ chart_axis_set_log_base(lxw_chart_axis *axis, uint16_t log_base)
 HB_FUNC( CHART_AXIS_SET_LOG_BASE )
 { 
    lxw_chart_axis *axis = hb_parptr( 1 ) ;
-   uint16_t log_base = hb_parnl( 2 ) ;
+   uint16_t log_base = (uint16_t) hb_parnl( 2 ) ;
 
    chart_axis_set_log_base(axis, log_base) ; 
 }
@@ -1270,7 +1270,7 @@ chart_axis_set_major_tick_mark(lxw_chart_axis *axis, uint8_t type)
 HB_FUNC( CHART_AXIS_SET_MAJOR_TICK_MARK )
 { 
    lxw_chart_axis *axis = hb_parptr( 1 ) ;
-   uint8_t type = hb_parni( 2 ) ;
+   uint8_t type = (uint8_t) hb_parni( 2 ) ;
 
    chart_axis_set_major_tick_mark(axis, type) ; 
 }
@@ -1289,7 +1289,7 @@ chart_axis_set_minor_tick_mark(lxw_chart_axis *axis, uint8_t type)
 HB_FUNC( CHART_AXIS_SET_MINOR_TICK_MARK )
 { 
    lxw_chart_axis *axis = hb_parptr( 1 ) ;
-   uint8_t type = hb_parni( 2 ) ;
+   uint8_t type = (uint8_t) hb_parni( 2 ) ;
 
    chart_axis_set_minor_tick_mark(axis, type) ; 
 }
@@ -1308,7 +1308,7 @@ chart_axis_set_interval_unit(lxw_chart_axis *axis, uint16_t unit)
 HB_FUNC( CHART_AXIS_SET_INTERVAL_UNIT )
 { 
    lxw_chart_axis *axis = hb_parptr( 1 ) ;
-   uint16_t unit = hb_parnl( 2 ) ;
+   uint16_t unit = (uint16_t) hb_parnl( 2 ) ;
 
    chart_axis_set_interval_unit(axis, unit) ; 
 }
@@ -1327,7 +1327,7 @@ chart_axis_set_interval_tick(lxw_chart_axis *axis, uint16_t unit)
 HB_FUNC( CHART_AXIS_SET_INTERVAL_TICK )
 { 
    lxw_chart_axis *axis = hb_parptr( 1 ) ;
-   uint16_t unit = hb_parnl( 2 ) ;
+   uint16_t unit = (uint16_t) hb_parnl( 2 ) ;
 
    chart_axis_set_interval_tick(axis, unit) ; 
 }
@@ -1384,7 +1384,7 @@ chart_axis_set_display_units(lxw_chart_axis *axis, uint8_t units)
 HB_FUNC( CHART_AXIS_SET_DISPLAY_UNITS )
 { 
    lxw_chart_axis *axis = hb_parptr( 1 ) ;
-   uint8_t units = hb_parni( 2 ) ;
+   uint8_t units = (uint8_t) hb_parni( 2 ) ;
 
    chart_axis_set_display_units(axis, units) ; 
 }
@@ -1403,7 +1403,7 @@ chart_axis_set_display_units_visible(lxw_chart_axis *axis, uint8_t visible)
 HB_FUNC( CHART_AXIS_SET_DISPLAY_UNITS_VISIBLE )
 { 
    lxw_chart_axis *axis = hb_parptr( 1 ) ;
-   uint8_t visible = hb_parni( 2 ) ;
+   uint8_t visible = (uint8_t) hb_parni( 2 ) ;
 
    chart_axis_set_display_units_visible(axis, visible) ; 
 }
@@ -1422,7 +1422,7 @@ chart_axis_major_gridlines_set_visible(lxw_chart_axis *axis, uint8_t visible)
 HB_FUNC( CHART_AXIS_MAJOR_GRIDLINES_SET_VISIBLE )
 { 
    lxw_chart_axis *axis = hb_parptr( 1 ) ;
-   uint8_t visible = hb_parni( 2 ) ;
+   uint8_t visible = (uint8_t) hb_parni( 2 ) ;
 
    chart_axis_major_gridlines_set_visible(axis, visible) ; 
 }
@@ -1461,7 +1461,7 @@ chart_axis_minor_gridlines_set_visible(lxw_chart_axis *axis, uint8_t visible)
 HB_FUNC( CHART_AXIS_MINOR_GRIDLINES_SET_VISIBLE )
 { 
    lxw_chart_axis *axis = hb_parptr( 1 ) ;
-   uint8_t visible = hb_parni( 2 ) ;
+   uint8_t visible = (uint8_t) hb_parni( 2 ) ;
 
    chart_axis_minor_gridlines_set_visible(axis, visible) ; 
 }
@@ -1500,7 +1500,7 @@ chart_axis_set_label_align(lxw_chart_axis *axis, uint8_t align)
 HB_FUNC( CHART_AXIS_SET_LABEL_ALIGN )
 { 
    lxw_chart_axis *axis = hb_parptr( 1 ) ;
-   uint8_t align = hb_parni( 2 ) ;
+   uint8_t align = (uint8_t) hb_parni( 2 ) ;
 
    chart_axis_set_label_align(axis, align) ; 
 }
@@ -1540,8 +1540,8 @@ HB_FUNC( CHART_TITLE_SET_NAME_RANGE )
 { 
    lxw_chart *self = hb_parptr( 1 ) ;
    const char *sheetname = hb_parcx( 2 ) ;
-   lxw_row_t row = hb_parni( 3 ) ;
-   lxw_col_t col = hb_parni( 4 ) ;
+   lxw_row_t row = (lxw_row_t) hb_parni( 3 ) ;
+   lxw_col_t col = (lxw_col_t) hb_parni( 4 ) ;
 
    chart_title_set_name_range(self, sheetname, row, col) ; 
 }
@@ -1596,7 +1596,7 @@ chart_legend_set_position(lxw_chart *self, uint8_t position)
 HB_FUNC( CHART_LEGEND_SET_POSITION )
 { 
    lxw_chart *self = hb_parptr( 1 ) ;
-   uint8_t position = hb_parni( 2 ) ;
+   uint8_t position = (uint8_t) hb_parni( 2 ) ;
 
    chart_legend_set_position(self, position) ; 
 }
@@ -1787,10 +1787,10 @@ chart_set_table_grid(lxw_chart *self, uint8_t horizontal, uint8_t vertical,
 HB_FUNC( CHART_SET_TABLE_GRID )
 { 
    lxw_chart *self = hb_parptr( 1 ) ;
-   uint8_t horizontal = hb_parni( 2 ) ;
-   uint8_t vertical = hb_parni( 3 ) ;
-   uint8_t outline = hb_parni( 4 ) ;
-   uint8_t legend_keys = hb_parni( 5 ) ;
+   uint8_t horizontal  = (uint8_t) hb_parni( 2 ) ;
+   uint8_t vertical    = (uint8_t) hb_parni( 3 ) ;
+   uint8_t outline     = (uint8_t) hb_parni( 4 ) ;
+   uint8_t legend_keys = (uint8_t) hb_parni( 5 ) ;
 
    chart_set_table_grid(self, horizontal, vertical, outline, legend_keys) ; 
 }
@@ -1909,7 +1909,7 @@ chart_set_series_overlap(lxw_chart *self, int8_t overlap)
 HB_FUNC( CHART_SET_SERIES_OVERLAP )
 { 
    lxw_chart *self = hb_parptr( 1 ) ;
-   int8_t overlap = hb_parni( 2 ) ;
+   int8_t overlap = (uint8_t) hb_parni( 2 ) ;
 
    chart_set_series_overlap(self, overlap) ; 
 }
@@ -1928,7 +1928,7 @@ chart_show_blanks_as(lxw_chart *self, uint8_t option)
 HB_FUNC( CHART_SHOW_BLANKS_AS )
 { 
    lxw_chart *self = hb_parptr( 1 ) ;
-   uint8_t option = hb_parni( 2 ) ;
+   uint8_t option = (uint8_t) hb_parni( 2 ) ;
 
    chart_show_blanks_as(self, option) ; 
 }
@@ -1965,7 +1965,7 @@ chart_set_series_gap(lxw_chart *self, uint16_t gap)
 HB_FUNC( CHART_SET_SERIES_GAP )
 { 
    lxw_chart *self = hb_parptr( 1 ) ;
-   uint16_t gap = hb_parnl( 2 ) ;
+   uint16_t gap = (uint16_t) hb_parnl( 2 ) ;
 
    chart_set_series_gap(self, gap) ; 
 }
@@ -1984,7 +1984,7 @@ chart_set_rotation(lxw_chart *self, uint16_t rotation)
 HB_FUNC( CHART_SET_ROTATION )
 { 
    lxw_chart *self = hb_parptr( 1 ) ;
-   uint16_t rotation = hb_parnl( 2 ) ;
+   uint16_t rotation = (uint16_t) hb_parnl( 2 ) ;
 
    chart_set_rotation(self, rotation) ; 
 }
@@ -1999,7 +1999,7 @@ HB_FUNC( CHART_SET_ROTATION )
 HB_FUNC( CHART_SET_HOLE_SIZE )
 {
    lxw_chart *self = hb_parptr( 1 );
-   uint8_t size = hb_parni( 2 ) ;
+   uint8_t size = (uint8_t) hb_parni( 2 ) ;
 
    chart_set_hole_size( self, size );
 }
@@ -2007,3 +2007,4 @@ HB_FUNC( CHART_SET_HOLE_SIZE )
 
 
 //eof
+
