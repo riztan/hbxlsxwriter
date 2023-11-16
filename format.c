@@ -60,14 +60,13 @@ HB_FUNC( LXW_FORMAT_FREE )
  * lxw_format_check_color(lxw_color_t color)
  *
  */
-/*
 HB_FUNC( LXW_FORMAT_CHECK_COLOR )
 { 
    lxw_color_t color = hb_parnl( 1 ) ;
 
    hb_retnl( lxw_format_check_color( color ) ); 
 }
-*/
+
 
 
 
@@ -198,7 +197,7 @@ HB_FUNC( FORMAT_SET_FONT_COLOR )
    lxw_format *self = hb_parptr(1 ) ;
    lxw_color_t color = hb_parnl(2 ) ;
 
-   self->font_color = color; //lxw_format_check_color(color);
+   self->font_color = lxw_format_check_color(color);
 }
 
 
@@ -248,7 +247,7 @@ HB_FUNC( FORMAT_SET_ITALIC )
 HB_FUNC( FORMAT_SET_UNDERLINE )
 { 
    lxw_format *self = hb_parptr( 1 ) ;
-   uint8_t style = (uint8_t) hb_parni( 2 ) ;
+   uint8_t style = hb_parni( 2 ) ;
 
    format_set_underline( self, style ); 
 }
@@ -283,7 +282,7 @@ HB_FUNC( FORMAT_SET_FONT_STRIKEOUT )
 HB_FUNC( FORMAT_SET_FONT_SCRIPT )
 { 
    lxw_format *self = hb_parptr( 1 ) ;
-   uint8_t style = (uint8_t) hb_parni( 2 ) ;
+   uint8_t style = hb_parni( 2 ) ;
 
    format_set_font_script( self, style ); 
 }
@@ -387,7 +386,7 @@ HB_FUNC( FORMAT_SET_HIDDEN )
 HB_FUNC( FORMAT_SET_ALIGN )
 { 
    lxw_format *self = hb_parptr( 1 ) ;
-   uint8_t value = (uint8_t) hb_parni( 2 ) ;
+   uint8_t value = hb_parni( 2 ) ;
 
    format_set_align( self, value ); 
 }
@@ -422,7 +421,7 @@ HB_FUNC( FORMAT_SET_TEXT_WRAP )
 HB_FUNC( FORMAT_SET_ROTATION )
 { 
    lxw_format *self = hb_parptr( 1 ) ;
-   int16_t angle = (int16_t) hb_parnl( 2 ) ;
+   int16_t angle = hb_parnl( 2 ) ;
 
    format_set_rotation( self, angle ); 
 }
@@ -440,7 +439,7 @@ HB_FUNC( FORMAT_SET_ROTATION )
 HB_FUNC( FORMAT_SET_INDENT )
 { 
    lxw_format *self = hb_parptr( 1 ) ;
-   uint8_t value = (uint8_t) hb_parni( 2 ) ;
+   uint8_t value = hb_parni( 2 ) ;
 
    format_set_indent( self, value ); 
 }
@@ -493,7 +492,7 @@ HB_FUNC( FORMAT_SET_TEXT_JUSTLAST )
 HB_FUNC( FORMAT_SET_PATTERN )
 { 
    lxw_format *self = hb_parptr( 1 ) ;
-   uint8_t value = (uint8_t) hb_parni( 2 ) ;
+   uint8_t value = hb_parni( 2 ) ;
 
    format_set_pattern( self, value ); 
 }
@@ -547,7 +546,7 @@ HB_FUNC( FORMAT_SET_FG_COLOR )
 HB_FUNC( FORMAT_SET_BORDER )
 { 
    lxw_format *self = hb_parptr(1 ) ;
-   uint8_t style = (uint8_t) hb_parni( 2 ) ;
+   uint8_t style = hb_parni( 2 ) ;
 
    format_set_border( self, style ); 
 }
@@ -583,7 +582,7 @@ HB_FUNC( FORMAT_SET_BORDER_COLOR )
 HB_FUNC( FORMAT_SET_BOTTOM )
 { 
    lxw_format *self = hb_parptr( 1 ) ;
-   uint8_t style = (uint8_t) hb_parni( 2 ) ;
+   uint8_t style = hb_parni( 2 ) ;
 
    format_set_bottom( self, style ); 
 }
@@ -619,7 +618,7 @@ HB_FUNC( FORMAT_SET_BOTTOM_COLOR )
 HB_FUNC( FORMAT_SET_LEFT )
 { 
    lxw_format *self = hb_parptr( 1 ) ;
-   uint8_t style = (uint8_t) hb_parni( 2 ) ;
+   uint8_t style = hb_parni( 2 ) ;
 
    format_set_left( self, style ); 
 }
@@ -655,7 +654,7 @@ HB_FUNC( FORMAT_SET_LEFT_COLOR )
 HB_FUNC( FORMAT_SET_RIGHT )
 { 
    lxw_format *self = hb_parptr(1 ) ;
-   uint8_t style = (uint8_t) hb_parni( 2 ) ;
+   uint8_t style = hb_parni( 2 ) ;
 
    format_set_right( self, style ); 
 }
@@ -691,7 +690,7 @@ HB_FUNC( FORMAT_SET_RIGHT_COLOR )
 HB_FUNC( FORMAT_SET_TOP )
 { 
    lxw_format *self = hb_parptr( 1 ) ;
-   uint8_t style = (uint8_t) hb_parni( 2 ) ;
+   uint8_t style = hb_parni( 2 ) ;
 
    format_set_top( self, style ); 
 }
@@ -727,7 +726,7 @@ HB_FUNC( FORMAT_SET_TOP_COLOR )
 HB_FUNC( FORMAT_SET_DIAG_TYPE )
 { 
    lxw_format *self = hb_parptr( 1 ) ;
-   uint8_t type = (uint8_t) hb_parni( 2 ) ;
+   uint8_t type = hb_parni( 2 ) ;
 
    format_set_diag_type( self, type ); 
 }
@@ -763,7 +762,7 @@ HB_FUNC( FORMAT_SET_DIAG_COLOR )
 HB_FUNC( FORMAT_SET_DIAG_BORDER )
 { 
    lxw_format *self = hb_parptr( 1 ) ;
-   uint8_t style = (uint8_t) hb_parni( 2 ) ;
+   uint8_t style = hb_parni( 2 ) ;
 
    format_set_diag_border( self, style ); 
 }
@@ -781,7 +780,7 @@ HB_FUNC( FORMAT_SET_DIAG_BORDER )
 HB_FUNC( FORMAT_SET_NUM_FORMAT_INDEX )
 { 
    lxw_format *self = hb_parptr( 1 ) ;
-   uint8_t value = (uint8_t) hb_parni( 2 ) ;
+   uint8_t value = hb_parni( 2 ) ;
 
    format_set_num_format_index( self, value ); 
 }
@@ -800,7 +799,7 @@ HB_FUNC( FORMAT_SET_NUM_FORMAT_INDEX )
 HB_FUNC( FORMAT_SET_VALIGN )
 { 
    lxw_format *self = hb_parptr( 1 ) ;
-   uint8_t value = (uint8_t) hb_parni( 2 ) ;
+   uint8_t value = hb_parni( 2 ) ;
 
    format_set_valign( self, value ); 
 }
@@ -818,7 +817,7 @@ HB_FUNC( FORMAT_SET_VALIGN )
 HB_FUNC( FORMAT_SET_READING_ORDER )
 { 
    lxw_format *self = hb_parptr( 1 ) ;
-   uint8_t value = (uint8_t) hb_parni( 2 ) ;
+   uint8_t value = hb_parni( 2 ) ;
 
    format_set_reading_order( self, value ); 
 }
@@ -836,7 +835,7 @@ HB_FUNC( FORMAT_SET_READING_ORDER )
 HB_FUNC( FORMAT_SET_FONT_FAMILY )
 { 
    lxw_format *self = hb_parptr( 1 ) ;
-   uint8_t value = (uint8_t) hb_parni( 2 ) ;
+   uint8_t value = hb_parni( 2 ) ;
 
    format_set_font_family( self, value ); 
 }
@@ -854,7 +853,7 @@ HB_FUNC( FORMAT_SET_FONT_FAMILY )
 HB_FUNC( FORMAT_SET_FONT_CHARSET )
 { 
    lxw_format *self = hb_parptr( 1 ) ;
-   uint8_t value = (uint8_t) hb_parni( 2 ) ;
+   uint8_t value = hb_parni( 2 ) ;
 
    format_set_font_charset( self, value ); 
 }
@@ -913,4 +912,3 @@ HB_FUNC( FORMAT_SET_FONT_EXTEND )
 
 
 //eof
-

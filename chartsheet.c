@@ -98,13 +98,13 @@ HB_FUNC( LXW_CHARTSHEET_ASSEMBLE_XML_FILE )
 /*
 lxw_error
 chartsheet_set_chart_opt(lxw_chartsheet *self,
-   lxw_chart *chart, lxw_chart_options *user_options)
+   lxw_chart *chart, lxw_image_options *user_options)
 */
 HB_FUNC( CHARTSHEET_SET_CHART_OPT )
 { 
    lxw_chartsheet *self = hb_parptr( 1 ) ;
    lxw_chart *chart = hb_parptr( 2 ) ;
-   lxw_chart_options *user_options = hb_parptr( 3 ) ;
+   lxw_image_options *user_options = hb_parptr( 3 ) ;
 
    hb_retni( chartsheet_set_chart_opt(self, chart, user_options) ); 
 }
@@ -259,7 +259,7 @@ chartsheet_set_zoom(lxw_chartsheet *self, uint16_t scale)
 HB_FUNC( CHARTSHEET_SET_ZOOM )
 { 
    lxw_chartsheet *self = hb_parptr( 1 ) ;
-   uint16_t scale = (uint16_t) hb_parnl( 2 ) ;
+   uint16_t scale = hb_parnl( 2 ) ;
 
    chartsheet_set_zoom(self, scale) ; 
 }
@@ -314,7 +314,7 @@ chartsheet_set_paper(lxw_chartsheet *self, uint8_t paper_size)
 HB_FUNC( CHARTSHEET_SET_PAPER )
 { 
    lxw_chartsheet *self = hb_parptr( 1 ) ;
-   uint8_t paper_size = (uint8_t) hb_parni( 2 ) ;
+   uint8_t paper_size = hb_parni( 2 ) ;
 
    chartsheet_set_paper(self, paper_size) ; 
 }
@@ -405,4 +405,3 @@ HB_FUNC( CHARTSHEET_SET_HEADER )
 
 
 //eof
-

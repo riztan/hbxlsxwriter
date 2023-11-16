@@ -43,8 +43,8 @@ lxw_col_to_name(char *col_name, lxw_col_t col_num, uint8_t absolute)
 HB_FUNC( LXW_COL_TO_NAME )
 { 
    char *col_name = hb_param( 1, HB_IT_STRING ) ;
-   lxw_col_t col_num = (lxw_col_t) hb_parni( 2 ) ;
-   uint8_t absolute = (uint8_t) hb_parni( 3 ) ;
+   lxw_col_t col_num = hb_parni( 2 ) ;
+   uint8_t absolute = hb_parni( 3 ) ;
 
    lxw_col_to_name(col_name, col_num, absolute) ; 
 }
@@ -64,7 +64,7 @@ HB_FUNC( LXW_ROWCOL_TO_CELL )
 { 
    char *cell_name = hb_param( 1, HB_IT_STRING ) ;
    lxw_row_t row = hb_parni( 2 ) ;
-   lxw_col_t col = (lxw_col_t) hb_parni( 3 ) ;
+   lxw_col_t col = hb_parni( 3 ) ;
 
    lxw_rowcol_to_cell(cell_name, row, col) ; 
 }
@@ -86,9 +86,9 @@ HB_FUNC( LXW_ROWCOL_TO_CELL_ABS )
 { 
    char *cell_name = hb_param( 1, HB_IT_STRING ) ;
    lxw_row_t row = hb_parni( 2 ) ;
-   lxw_col_t col = (lxw_col_t) hb_parni( 3 ) ;
-   uint8_t abs_row = (uint8_t) hb_parni( 4 ) ;
-   uint8_t abs_col = (uint8_t) hb_parni( 5 ) ;
+   lxw_col_t col = hb_parni( 3 ) ;
+   uint8_t abs_row = hb_parni( 4 ) ;
+   uint8_t abs_col = hb_parni( 5 ) ;
 
    lxw_rowcol_to_cell_abs(cell_name, row, col, abs_row, abs_col) ; 
 }
@@ -111,9 +111,9 @@ HB_FUNC( LXW_ROWCOL_TO_RANGE )
 { 
    char *range = hb_param( 1, HB_IT_STRING ) ;
    lxw_row_t first_row = hb_parni( 2 ) ;
-   lxw_col_t first_col = (lxw_col_t) hb_parni( 3 ) ;
+   lxw_col_t first_col = hb_parni( 3 ) ;
    lxw_row_t last_row = hb_parni( 4 ) ;
-   lxw_col_t last_col = (lxw_col_t) hb_parni( 5 ) ;
+   lxw_col_t last_col = hb_parni( 5 ) ;
 
    lxw_rowcol_to_range(range, first_row, first_col, last_row, last_col) ; 
 }
@@ -136,9 +136,9 @@ HB_FUNC( LXW_ROWCOL_TO_RANGE_ABS )
 { 
    char *range = hb_param( 1, HB_IT_STRING ) ;
    lxw_row_t first_row = hb_parni( 2 ) ;
-   lxw_col_t first_col = (lxw_col_t) hb_parni( 3 ) ;
+   lxw_col_t first_col = hb_parni( 3 ) ;
    lxw_row_t last_row = hb_parni( 4 ) ;
-   lxw_col_t last_col = (lxw_col_t) hb_parni( 5 ) ;
+   lxw_col_t last_col = hb_parni( 5 ) ;
 
    lxw_rowcol_to_range_abs(range, first_row, first_col, last_row, last_col) ; 
 }
@@ -162,9 +162,9 @@ HB_FUNC( LXW_ROWCOL_TO_FORMULA_ABS )
    char *formula = hb_param( 1, HB_IT_STRING ) ;
    const char *sheetname = hb_parcx( 2 ) ;
    lxw_row_t first_row = hb_parni( 3 ) ;
-   lxw_col_t first_col = (lxw_col_t) hb_parni( 4 ) ;
+   lxw_col_t first_col = hb_parni( 4 ) ;
    lxw_row_t last_row = hb_parni( 5 ) ;
-   lxw_col_t last_col = (lxw_col_t) hb_parni( 6 ) ;
+   lxw_col_t last_col = hb_parni( 6 ) ;
 
    lxw_rowcol_to_formula_abs(formula, sheetname, first_row, first_col, last_row, last_col) ; 
 }
@@ -256,7 +256,7 @@ lxw_datetime_to_excel_date(lxw_datetime *datetime, uint8_t date_1904)
 HB_FUNC( LXW_DATETIME_TO_EXCEL_DATE )
 { 
    lxw_datetime *datetime = hb_parXX( 1 ) ;
-   uint8_t date_1904 = (uint8_t) hb_parni( 2 ) ;
+   uint8_t date_1904 = hb_parni( 2 ) ;
 
    hb_retnl( lxw_datetime_to_excel_date(datetime, date_1904) ); 
 }
@@ -318,4 +318,3 @@ HB_FUNC( LXW_VERSION )
 
 
 //eof
-
