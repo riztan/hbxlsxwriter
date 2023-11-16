@@ -199,7 +199,7 @@ HB_FUNC( WORKBOOK_ADD_CHARTSHEET )
 HB_FUNC( WORKBOOK_ADD_CHART )
 { 
    lxw_workbook *self = hb_parptr( 1 ) ;
-   uint8_t type = hb_parni( 2 ) ;
+   uint8_t type = (uint8_t) hb_parni( 2 ) ;
 
    hb_retptr( workbook_add_chart( self, type ) ); 
 }
@@ -352,7 +352,7 @@ HB_FUNC( WORKBOOK_SET_CUSTOM_PROPERTY_BOOLEAN )
 { 
    lxw_workbook *self = hb_parptr( 1 ) ;
    const char *name = hb_parcx( 2 ) ;
-   uint8_t value = hb_parni( 3 ) ;
+   uint8_t value = (uint8_t) hb_parni( 3 ) ;
 
    hb_retni( workbook_set_custom_property_boolean( self, name, value ) ); 
 }
@@ -415,5 +415,71 @@ HB_FUNC( WORKBOOK_GET_CHARTSHEET_BY_NAME )
 
 
 
+/**
+ * @brief Validate a worksheet or chartsheet name.
+ *
+ *
+ * lxw_error workbook_validate_sheet_name(lxw_workbook *workbook,
+ *                                        const char *sheetname);
+ */
+HB_FUNC( WORKBOOK_VALIDATE_SHEET_NAME )
+{
+   lxw_workbook *self    = hb_parptr( 1 );
+   const char *sheetname = hb_parcx( 2 );
+
+   hb_retni( workbook_validate_sheet_name( self, sheetname ) );
+}
+
+
+
+/**
+ * @brief Add a vbaProject binary to the Excel workbook.
+ *
+ * lxw_error workbook_add_vba_project(lxw_workbook *workbook,
+ *                                    const char *filename);
+ */
+HB_FUNC( WORKBOOK_ADD_VBA_PROJECT )
+{
+   lxw_workbook *self   = hb_parptr( 1 );
+   const char *filename = hb_parcx( 2 );
+
+   hb_retni( workbook_add_vba_project( self, filename ) );
+}
+
+
+
+/**
+ * @brief Set the VBA name for the workbook.
+ *
+ * lxw_error workbook_set_vba_name(lxw_workbook *workbook, const char *name)
+ */
+HB_FUNC( WORKBOOK_SET_VBA_NAME )
+{
+   lxw_workbook *self = hb_parptr( 1 );
+   const char *name   = hb_parcx( 2 );
+
+   hb_retni( workbook_set_vba_name( self, name ) );
+}
+
+
+/**
+ * @brief Add a recommendation to open the file in "read-only" mode.
+ *  void workbook_read_only_recommended(lxw_workbook *workbook);
+ */
+HB_FUNC( WORKBOOK_READ_ONLY_RECOMMENDED )
+{
+   lxw_workbook *self = hb_parptr( 1 );
+   workbook_read_only_recommended( self );
+}
+
+
+
+HB_FUNC( WORKBOOK_UNSET_DEFAULT_URL_FORMAT )
+{
+   lxw_workbook *self = hb_parptr( 1 );
+   workbook_unset_default_url_format( self );
+}
+
 
 //eof
+
